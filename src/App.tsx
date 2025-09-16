@@ -155,7 +155,6 @@ const SmartTouristApp: React.FC = () => {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const sosMapContainer = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
   const sosMapRef = useRef<mapboxgl.Map | null>(null);
 
   const [notifications] = useState<Notification[]>([]);
@@ -278,66 +277,6 @@ const SmartTouristApp: React.FC = () => {
     // Reload active trip after completion
     await loadActiveTrip();
   };
-
-  // Map initialization
-  useEffect(() => {
-    if (
-      !isAuthenticated ||
-      activeTab !== "map" ||
-      !mapContainer.current ||
-      mapRef.current
-    )
-      return;
-
-    mapRef.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/light-v10",
-      center: [55.2708, 25.2048],
-      zoom: 12,
-    });
-
-    mapRef.current.addControl(new mapboxgl.NavigationControl());
-
-    // Add user marker
-    new mapboxgl.Marker({ color: "#000000" })
-      .setLngLat([55.2708, 25.2048])
-      .addTo(mapRef.current);
-
-    // Add group member markers
-    groupMembers.forEach((member) => {
-      const coords: [number, number] = [
-        55.2708 + (Math.random() - 0.5) * 0.02,
-        25.2048 + (Math.random() - 0.5) * 0.02,
-      ];
-
-      const color =
-        member.status === "safe"
-          ? "#22c55e"
-          : member.status === "warning"
-          ? "#f59e0b"
-          : "#ef4444";
-
-      new mapboxgl.Marker({ color })
-        .setLngLat(coords)
-        .setPopup(
-          new mapboxgl.Popup().setHTML(`
-            <div class="p-2">
-              <h3 class="font-semibold">${member.name}</h3>
-              <p class="text-sm text-gray-600">${member.location}</p>
-              <p class="text-xs text-gray-500">${member.lastSeen}</p>
-            </div>
-          `)
-        )
-        .addTo(mapRef.current!);
-    });
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, [activeTab, groupMembers, isAuthenticated]);
 
   // SOS Map initialization
   useEffect(() => {
