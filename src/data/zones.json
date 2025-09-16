@@ -1,0 +1,663 @@
+
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kaziranga Wildlife Zone Alpha",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Assam",
+        "severity": "High",
+        "description": "Core rhino habitat area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [93.32, 26.68],
+            [93.27, 26.71],
+            [93.21, 26.69],
+            [93.17, 26.63],
+            [93.16, 26.56],
+            [93.20, 26.50],
+            [93.26, 26.47],
+            [93.33, 26.43],
+            [93.41, 26.42],
+            [93.48, 26.45],
+            [93.53, 26.50],
+            [93.55, 26.58],
+            [93.51, 26.65],
+            [93.45, 26.70],
+            [93.38, 26.72],
+            [93.30, 26.69],
+            [93.32, 26.68]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Manas Tiger Reserve Buffer",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Assam",
+        "severity": "High",
+        "description": "Tiger corridor protection zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [90.75, 26.82],
+            [90.69, 26.80],
+            [90.63, 26.74],
+            [90.60, 26.67],
+            [90.61, 26.59],
+            [90.66, 26.52],
+            [90.73, 26.48],
+            [90.83, 26.47],
+            [90.92, 26.49],
+            [91.00, 26.54],
+            [91.05, 26.61],
+            [91.06, 26.69],
+            [91.02, 26.76],
+            [90.95, 26.81],
+            [90.86, 26.83],
+            [90.76, 26.81],
+            [90.75, 26.82]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Guwahati Hills Landslide Zone",
+        "restriction_type": "Landslide Zone",
+        "state": "Assam",
+        "severity": "Very High",
+        "description": "Monsoon landslide prone area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.58, 26.28],
+            [91.55, 26.26],
+            [91.49, 26.21],
+            [91.44, 26.16],
+            [91.42, 26.09],
+            [91.44, 26.02],
+            [91.49, 25.96],
+            [91.56, 25.92],
+            [91.64, 25.91],
+            [91.71, 25.93],
+            [91.77, 25.97],
+            [91.81, 26.03],
+            [91.82, 26.10],
+            [91.80, 26.17],
+            [91.76, 26.23],
+            [91.70, 26.27],
+            [91.62, 26.29],
+            [91.55, 26.27],
+            [91.58, 26.28]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Brahmaputra Flood Zone North",
+        "restriction_type": "Flood Disaster Zone",
+        "state": "Assam",
+        "severity": "Very High",
+        "description": "Annual flooding area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [93.95, 27.15],
+            [93.90, 27.17],
+            [93.82, 27.14],
+            [93.76, 27.08],
+            [93.73, 27.00],
+            [93.74, 26.91],
+            [93.78, 26.82],
+            [93.86, 26.75],
+            [93.97, 26.70],
+            [94.10, 26.67],
+            [94.22, 26.67],
+            [94.33, 26.70],
+            [94.42, 26.75],
+            [94.48, 26.83],
+            [94.50, 26.93],
+            [94.47, 27.02],
+            [94.39, 27.10],
+            [94.26, 27.15],
+            [94.10, 27.17],
+            [93.95, 27.15]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Namdapha Core Wildlife Area",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Arunachal Pradesh",
+        "severity": "High",
+        "description": "Pristine forest ecosystem"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [96.28, 27.72],
+            [96.20, 27.69],
+            [96.12, 27.63],
+            [96.06, 27.55],
+            [96.03, 27.46],
+            [96.04, 27.36],
+            [96.08, 27.27],
+            [96.15, 27.20],
+            [96.25, 27.15],
+            [96.37, 27.13],
+            [96.49, 27.14],
+            [96.60, 27.18],
+            [96.69, 27.25],
+            [96.75, 27.34],
+            [96.78, 27.44],
+            [96.77, 27.54],
+            [96.72, 27.63],
+            [96.64, 27.70],
+            [96.53, 27.74],
+            [96.40, 27.75],
+            [96.28, 27.72]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tawang Military Border Zone",
+        "restriction_type": "Military Zone",
+        "state": "Arunachal Pradesh",
+        "severity": "Very High",
+        "description": "Restricted border security area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.78, 27.85],
+            [91.70, 27.81],
+            [91.61, 27.75],
+            [91.55, 27.66],
+            [91.52, 27.56],
+            [91.53, 27.45],
+            [91.58, 27.35],
+            [91.66, 27.27],
+            [91.76, 27.22],
+            [91.88, 27.20],
+            [92.00, 27.21],
+            [92.11, 27.25],
+            [92.20, 27.32],
+            [92.26, 27.41],
+            [92.29, 27.52],
+            [92.28, 27.63],
+            [92.24, 27.73],
+            [92.16, 27.81],
+            [92.05, 27.86],
+            [91.91, 27.88],
+            [91.78, 27.85]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bomdila Landslide Risk Area",
+        "restriction_type": "Landslide Zone",
+        "state": "Arunachal Pradesh",
+        "severity": "High",
+        "description": "Steep terrain landslide zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [92.24, 27.41],
+            [92.20, 27.44],
+            [92.13, 27.40],
+            [92.08, 27.34],
+            [92.06, 27.26],
+            [92.07, 27.18],
+            [92.11, 27.11],
+            [92.18, 27.05],
+            [92.27, 27.02],
+            [92.36, 27.02],
+            [92.44, 27.05],
+            [92.50, 27.10],
+            [92.54, 27.17],
+            [92.55, 27.25],
+            [92.53, 27.32],
+            [92.48, 27.38],
+            [92.41, 27.42],
+            [92.32, 27.43],
+            [92.24, 27.41]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shillong Peak Conservation Zone",
+        "restriction_type": "Environmental Protection",
+        "state": "Meghalaya",
+        "severity": "High",
+        "description": "Watershed protection area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.75, 25.68],
+            [91.65, 25.71],
+            [91.59, 25.66],
+            [91.55, 25.59],
+            [91.54, 25.51],
+            [91.56, 25.43],
+            [91.61, 25.36],
+            [91.68, 25.31],
+            [91.77, 25.28],
+            [91.86, 25.28],
+            [91.94, 25.31],
+            [92.00, 25.36],
+            [92.04, 25.43],
+            [92.05, 25.51],
+            [92.03, 25.59],
+            [91.98, 25.65],
+            [91.91, 25.69],
+            [91.83, 25.70],
+            [91.75, 25.68]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "East Khasi Hills Mining Restricted Zone",
+        "restriction_type": "Environmental Protection",
+        "state": "Meghalaya",
+        "severity": "High",
+        "description": "Coal mining ban area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.42, 25.48],
+            [91.33, 25.41],
+            [91.28, 25.32],
+            [91.26, 25.22],
+            [91.28, 25.12],
+            [91.33, 25.03],
+            [91.41, 24.96],
+            [91.51, 24.91],
+            [91.63, 24.89],
+            [91.74, 24.90],
+            [91.84, 24.94],
+            [91.92, 25.01],
+            [91.97, 25.10],
+            [91.99, 25.20],
+            [91.97, 25.30],
+            [91.92, 25.39],
+            [91.83, 25.46],
+            [91.71, 25.50],
+            [91.57, 25.51],
+            [91.42, 25.48]
+          ]
+        ]
+      },
+      "id": 8
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Balpakram National Park Core",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Meghalaya",
+        "severity": "High",
+        "description": "Plateau ecosystem protection"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [90.08, 25.58],
+            [90.05, 25.59],
+            [89.98, 25.53],
+            [89.94, 25.45],
+            [89.93, 25.36],
+            [89.95, 25.27],
+            [90.00, 25.19],
+            [90.08, 25.13],
+            [90.17, 25.10],
+            [90.26, 25.10],
+            [90.34, 25.13],
+            [90.40, 25.19],
+            [90.44, 25.26],
+            [90.46, 25.34],
+            [90.45, 25.42],
+            [90.42, 25.50],
+            [90.36, 25.56],
+            [90.28, 25.60],
+            [90.18, 25.61],
+            [90.08, 25.58]
+          ]
+        ]
+      },
+      "id": 9
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aizawl Urban Landslide Zone",
+        "restriction_type": "Landslide Zone",
+        "state": "Mizoram",
+        "severity": "Very High",
+        "description": "Urban hillside instability"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [92.61, 23.89],
+            [92.55, 23.87],
+            [92.49, 23.81],
+            [92.45, 23.73],
+            [92.44, 23.65],
+            [92.46, 23.57],
+            [92.51, 23.50],
+            [92.58, 23.45],
+            [92.67, 23.42],
+            [92.75, 23.42],
+            [92.83, 23.45],
+            [92.89, 23.50],
+            [92.93, 23.57],
+            [92.95, 23.65],
+            [92.94, 23.73],
+            [92.91, 23.80],
+            [92.86, 23.86],
+            [92.79, 23.90],
+            [92.70, 23.91],
+            [92.61, 23.89]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myanmar Border Security Zone",
+        "restriction_type": "Military Zone",
+        "state": "Mizoram",
+        "severity": "Very High",
+        "description": "International border control"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [92.88, 23.41],
+            [92.77, 23.38],
+            [92.69, 23.30],
+            [92.64, 23.20],
+            [92.62, 23.08],
+            [92.64, 22.96],
+            [92.69, 22.85],
+            [92.77, 22.76],
+            [92.87, 22.70],
+            [92.99, 22.67],
+            [93.11, 22.67],
+            [93.22, 22.70],
+            [93.31, 22.76],
+            [93.38, 22.85],
+            [93.42, 22.96],
+            [93.43, 23.08],
+            [93.41, 23.19],
+            [93.36, 23.29],
+            [93.28, 23.37],
+            [93.17, 23.42],
+            [93.03, 23.44],
+            [92.88, 23.41]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dampa Wildlife Sanctuary",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Mizoram",
+        "severity": "High",
+        "description": "Tropical forest protection"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [92.25, 23.81],
+            [92.15, 23.79],
+            [92.08, 23.73],
+            [92.03, 23.65],
+            [92.01, 23.56],
+            [92.02, 23.47],
+            [92.06, 23.38],
+            [92.12, 23.31],
+            [92.21, 23.26],
+            [92.31, 23.23],
+            [92.41, 23.23],
+            [92.50, 23.26],
+            [92.58, 23.31],
+            [92.64, 23.38],
+            [92.68, 23.47],
+            [92.69, 23.56],
+            [92.67, 23.65],
+            [92.63, 23.73],
+            [92.56, 23.79],
+            [92.47, 23.83],
+            [92.36, 23.84],
+            [92.25, 23.81]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Agartala Airport Security Perimeter",
+        "restriction_type": "Aviation Security",
+        "state": "Tripura",
+        "severity": "High",
+        "description": "International airport buffer zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.15, 23.98],
+            [91.11, 23.99],
+            [91.05, 23.95],
+            [91.01, 23.89],
+            [91.00, 23.82],
+            [91.01, 23.75],
+            [91.05, 23.69],
+            [91.11, 23.64],
+            [91.18, 23.61],
+            [91.25, 23.61],
+            [91.31, 23.64],
+            [91.36, 23.69],
+            [91.39, 23.75],
+            [91.40, 23.82],
+            [91.38, 23.89],
+            [91.34, 23.95],
+            [91.28, 23.99],
+            [91.21, 24.00],
+            [91.15, 23.98]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sepahijala Wildlife Reserve",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Tripura",
+        "severity": "High",
+        "description": "Primate conservation zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.52, 23.84],
+            [91.45, 23.80],
+            [91.39, 23.73],
+            [91.35, 23.65],
+            [91.34, 23.56],
+            [91.36, 23.47],
+            [91.41, 23.39],
+            [91.48, 23.33],
+            [91.57, 23.29],
+            [91.67, 23.28],
+            [91.76, 23.30],
+            [91.84, 23.35],
+            [91.90, 23.42],
+            [91.94, 23.50],
+            [91.95, 23.59],
+            [91.93, 23.68],
+            [91.89, 23.76],
+            [91.82, 23.82],
+            [91.73, 23.86],
+            [91.62, 23.87],
+            [91.52, 23.84]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Keibul Lamjao Floating Park",
+        "restriction_type": "Wildlife Sanctuary",
+        "state": "Manipur",
+        "severity": "High",
+        "description": "Unique floating national park"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [93.71, 24.59],
+            [93.66, 24.57],
+            [93.61, 24.53],
+            [93.58, 24.47],
+            [93.58, 24.40],
+            [93.60, 24.34],
+            [93.64, 24.29],
+            [93.70, 24.25],
+            [93.77, 24.23],
+            [93.84, 24.24],
+            [93.90, 24.27],
+            [93.94, 24.32],
+            [93.96, 24.38],
+            [93.96, 24.45],
+            [93.94, 24.51],
+            [93.90, 24.56],
+            [93.84, 24.59],
+            [93.77, 24.60],
+            [93.71, 24.59]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Imphal Seismic Risk Zone",
+        "restriction_type": "Earthquake Zone",
+        "state": "Manipur",
+        "severity": "Very High",
+        "description": "High earthquake risk area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [93.82, 24.96],
+            [93.75, 24.93],
+            [93.70, 24.87],
+            [93.67, 24.79],
+            [93.66, 24.71],
+            [93.68, 24.63],
+            [93.73, 24.56],
+            [93.80, 24.51],
+            [93.88, 24.49],
+            [93.96, 24.49],
+            [94.03, 24.52],
+            [94.09, 24.57],
+            [94.13, 24.64],
+            [94.15, 24.72],
+            [94.14, 24.80],
+            [94.11, 24.87],
+            [94.06, 24.93],
+            [93.99, 24.97],
+            [93.90, 24.98],
+            [93.82, 24.96]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tezu Military Installation Zone",
+        "restriction_type": "Military Zone",
+        "state": "Arunachal Pradesh",
+        "severity": "Very High",
+        "description": "Advanced landing ground security"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [96.08, 27.92],
+            [96.05, 27.87],
+            [96.04, 27.82],
+            [96.07, 27.78],
+            [96.12, 27.75],
+            [96.18, 27.74],
+            [96.23, 27.76],
+            [96.26, 27.80],
+            [96.27, 27.85],
+            [96.24, 27.89],
+            [96.19, 27.92],
+            [96.13, 27.93],
+            [96.08, 27.92]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 // =============================================================================
-// UPDATED MAP SCREEN WITH STATIC AND DYNAMIC HAZARD DETECTION
+// ENHANCED MAP SCREEN WITH CATEGORIZED HAZARD SYMBOLS
 // File path: client/src/components/screens/MapScreen.tsx
 // =============================================================================
 
@@ -15,177 +15,57 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import notificationService from "../../services/notificationService";
 
-import type {  FeatureCollection, Polygon} from "geojson";
+import type { FeatureCollection, Polygon } from "geojson";
+import zones from "../../data/zones.json";
+import sachet from "../../data/sachet.json";
+import landslide from "../../data/landslide.json";
 
-import sachet from "../../data/sachet.json"
-import landslide from "../../data/landslide.json"
 interface MapScreenProps {
   groupMembers: any[];
   mapContainer: any;
 }
 
-// ✅ Define interface for properties to include 'name'
 interface RestrictedAreaProperties {
   name?: string;
 }
 
-// ✅ Explicitly type geojsonData as FeatureCollection with Polygon geometry
 const geojsonData: FeatureCollection<Polygon, RestrictedAreaProperties> = {
+  ...(zones as any),
   type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 1" },
-      geometry: {
-        coordinates: [
-          [
-            [93.16495863862121, 26.552621054586794],
-            [93.19932017385474, 26.39122928395662],
-            [93.3858775112833, 26.581408004865963],
-            [93.31452114276584, 26.596440990775903],
-            [93.26138316868179, 26.58017222397166],
-            [93.16495863862121, 26.552621054586794],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 2" },
-      geometry: {
-        coordinates: [
-          [
-            [93.35423727078302, 26.355460048279525],
-            [93.0130711314194, 26.242286168160106],
-            [93.07781466825566, 26.1107433548827],
-            [93.66393758104971, 26.22133361823701],
-            [93.4903277319209, 26.576462759278584],
-            [93.35423727078302, 26.355460048279525],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 3" },
-      geometry: {
-        coordinates: [
-          [
-            [93.00843917124621, 25.992072656291725],
-            [92.79410375150132, 25.954904836769316],
-            [92.95487418380554, 25.817210363256805],
-            [93.37880424384912, 25.828463892745816],
-            [93.42767537248221, 26.028008626514847],
-            [93.00843917124621, 25.992072656291725],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 4" },
-      geometry: {
-        coordinates: [
-          [
-            [92.46496998455467, 26.13594583571863],
-            [92.48630336952488, 25.914494149405257],
-            [92.41877971980483, 25.87031957652539],
-            [92.8348975644887, 26.09511169480149],
-            [92.83782423867501, 26.17936809802609],
-            [92.57843546322755, 26.260305626827744],
-            [92.46496998455467, 26.13594583571863],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 5" },
-      geometry: {
-        coordinates: [
-          [
-            [92.17606803570374, 25.96800397224115],
-            [91.86775182260368, 25.711555828926464],
-            [91.89434484239433, 25.5053546888374],
-            [92.38524400405299, 25.50206704211685],
-            [92.31604743606181, 26.193065644028025],
-            [92.17606803570374, 25.96800397224115],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 6" },
-      geometry: {
-        coordinates: [
-          [
-            [92.76153278182, 25.655951820097556],
-            [92.73539507100742, 25.739900998958063],
-            [92.61556494918023, 25.719155739130187],
-            [92.54554211125804, 25.637991739319475],
-            [92.49369825664314, 25.113588297782158],
-            [93.37776703243765, 25.19906962464009],
-            [93.71110141784675, 25.7163091215903],
-            [92.76153278182, 25.655951820097556],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 7" },
-      geometry: {
-        coordinates: [
-          [
-            [90.71119784475167, 25.58386743986665],
-            [90.97394118328162, 25.392173828693103],
-            [91.14539791072974, 25.387218869104345],
-            [91.14267644984665, 25.50447855013877],
-            [91.578500574354, 25.64008030000315],
-            [91.6762185998677, 26.088673169591374],
-            [90.71119784475167, 25.58386743986665],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-    {
-      type: "Feature",
-      properties: { name: "Assam Restricted Zone 8" },
-      geometry: {
-        coordinates: [
-          [
-            [93.72693820400303, 26.017921607361373],
-            [94.3037576293259, 26.117533039376895],
-            [94.25642693601742, 26.43705359727643],
-            [94.83926567563185, 26.409603432881525],
-            [94.72986888028947, 26.832858523799615],
-            [93.89406650979265, 26.640630723598576],
-            [93.72693820400303, 26.017921607361373],
-          ],
-        ],
-        type: "Polygon",
-      },
-    },
-  ],
-};
+} as FeatureCollection<Polygon, RestrictedAreaProperties>;
 
 const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => {
-  // ✅ Type geojsonDataRef to match FeatureCollection
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
   const geojsonDataRef = useRef<FeatureCollection<Polygon, RestrictedAreaProperties>>(null);
   const hazardDataRef = useRef<any>({ sachet: [], landslide: [] });
   const { t } = useTranslation();
 
-  // Helper function to create notification for hazard alert
+  // Enhanced disaster categorization function
+  const categorizeDisaster = (disasterType: string) => {
+    const type = disasterType.toLowerCase();
+    
+    // Rain-related disasters
+    if (type.includes('light rain') || type.includes('moderate rain')) return 'light_rain';
+    if (type.includes('heavy rain') || type.includes('very heavy rain')) return 'heavy_rain';
+    
+    // Thunderstorm-related
+    if (type.includes('thunderstorm') || type.includes('lightning')) return 'thunderstorm';
+    if (type.includes('thunder shower')) return 'thunder_shower';
+    
+    // Wind-related
+    if (type.includes('cyclone') || type.includes('surface wind')) return 'cyclone';
+    
+    // Flood-related
+    if (type.includes('flood')) return 'flood';
+    
+    // Landslide
+    if (type.includes('landslide')) return 'landslide';
+    
+    return 'general'; // default for other disasters
+  };
+
+  // Helper function to create hazard notification
   const createHazardNotification = async (
     hazardType: string,
     message: string,
@@ -216,7 +96,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
   // Function to check if point is inside hazard circles
   const checkHazardCollision = (userPoint: any) => {
     const hazardMessages: string[] = [];
-    const baseRadius = 2; // km - same as your static radius
+    const baseRadius = 2; // 2km radius
 
     hazardDataRef.current.sachet.forEach((sachetItem: any) => {
       if (!sachetItem.centroid) return;
@@ -298,9 +178,9 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
     });
 
     mapRef.current.on("load", async () => {
-      // ✅ Use static GeoJSON data
       geojsonDataRef.current = geojsonData;
 
+      // Add restricted areas
       mapRef.current!.addSource("restricted-areas", {
         type: "geojson",
         data: geojsonData,
@@ -313,7 +193,6 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
         paint: { "fill-color": "#f1f100", "fill-opacity": 0.4 },
       });
 
-      // ✅ Optional: Add outline for better visibility
       mapRef.current!.addLayer({
         id: "restricted-outline",
         type: "line",
@@ -325,6 +204,73 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
         },
       });
 
+      // Add warning symbols for zones
+      const zonePoints = {
+        type: "FeatureCollection",
+        features: geojsonData.features.map((feature) => {
+          const centroid = turf.centroid(feature);
+          return {
+            type: "Feature",
+            geometry: centroid.geometry,
+            properties: {
+              ...feature.properties,
+              symbolType: "warning"
+            }
+          };
+        })
+      };
+
+      mapRef.current!.addSource("zone-symbols", {
+        type: "geojson",
+        data: zonePoints as any,
+      });
+
+      mapRef.current!.addLayer({
+        id: "zone-warning-symbols",
+        type: "circle",
+        source: "zone-symbols",
+        paint: {
+          "circle-radius": 7,
+          "circle-color": "#FFD700",
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#FFA500"
+        }
+      });
+
+      mapRef.current!.addLayer({
+        id: "zone-warning-text",
+        type: "symbol",
+        source: "zone-symbols",
+        layout: {
+          "text-field": "!",
+          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+          "text-size": 8,
+          "text-allow-overlap": true
+        },
+        paint: {
+          "text-color": "#000"
+        }
+      });
+
+      mapRef.current!.addLayer({
+        id: "zone-warning-labels",
+        type: "symbol",
+        source: "zone-symbols",
+        layout: {
+          "text-field": ["get", "name"],
+          "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+          "text-offset": [0, 1],
+          "text-anchor": "top",
+          "text-size": 8,
+          "text-allow-overlap": false
+        },
+        paint: {
+          "text-color": "#333",
+          "text-halo-color": "#fff",
+          "text-halo-width": 1
+        }
+      });
+
       // Draggable marker
       markerRef.current = new mapboxgl.Marker({ draggable: true })
         .setLngLat([92.9376, 26.2006])
@@ -332,15 +278,15 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
 
       const fetchHazards = async () => {
         try {
-          const sachetData = sachet
-          const landslideData = landslide
+          const sachetData = sachet;
+          const landslideData = landslide;
 
           hazardDataRef.current = {
             sachet: sachetData,
             landslide: landslideData,
           };
 
-          const baseRadius = 2; // km
+          const baseRadius = 2; // 2km radius
           let t = 0;
 
           const buildPolygons = (scale: number) => {
@@ -391,7 +337,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
             type: "fill",
             source: "static-hazards",
             paint: {
-              "fill-color": "rgba(255,0,0,0.2)",
+              "fill-color": "rgba(255,0,0,0.15)",
               "fill-outline-color": "red",
             },
           });
@@ -406,11 +352,120 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
             type: "fill",
             source: "hazards",
             paint: {
-              "fill-color": "rgba(255,0,0,0.3)",
+              "fill-color": "rgba(255,0,0,0.2)",
               "fill-outline-color": "red",
             },
           });
 
+          // Create categorized hazard point sources
+          const hazardCategories = {
+            light_rain: { color: "#87CEEB", icon: "💧", name: "Light Rain" },
+            heavy_rain: { color: "#4682B4", icon: "🌧️", name: "Heavy Rain" },
+            thunderstorm: { color: "#9370DB", icon: "⛈️", name: "Thunderstorm" },
+            thunder_shower: { color: "#8A2BE2", icon: "🌦️", name: "Thunder Shower" },
+            cyclone: { color: "#FF6347", icon: "🌪️", name: "Cyclone/Wind" },
+            flood: { color: "#0077BE", icon: "🌊", name: "Flood" },
+            landslide: { color: "#8B4513", icon: "⛰️", name: "Landslide" },
+            general: { color: "#FF4500", icon: "⚠️", name: "General Alert" }
+          };
+
+          // Group sachet data by disaster type
+          const groupedSachetData: { [key: string]: any[] } = {};
+          Object.keys(hazardCategories).forEach(key => {
+            groupedSachetData[key] = [];
+          });
+
+          sachetData.forEach((item: any) => {
+            if (!item.centroid) return;
+            const category = categorizeDisaster(item.disaster_type);
+            const [lon, lat] = item.centroid.split(",").map(Number);
+            
+            groupedSachetData[category].push({
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [lon, lat]
+              },
+              properties: {
+                ...item,
+                symbolType: category,
+                name: `${item.disaster_type} Alert`,
+                category: category
+              }
+            });
+          });
+
+          // Add landslide data
+          landslideData.forEach((item: any) => {
+            if (!item.lat || !item.lon) return;
+            groupedSachetData.landslide.push({
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [item.lon, item.lat]
+              },
+              properties: {
+                ...item,
+                symbolType: "landslide",
+                name: `Landslide Alert`,
+                category: "landslide"
+              }
+            });
+          });
+
+          // Create sources and layers for each hazard category
+          Object.entries(hazardCategories).forEach(([category, config]) => {
+            const categoryData = {
+              type: "FeatureCollection",
+              features: groupedSachetData[category] || []
+            };
+
+            if (categoryData.features.length === 0) return;
+
+            // Add source
+            mapRef.current!.addSource(`${category}-symbols`, {
+              type: "geojson",
+              data: categoryData as any,
+            });
+
+            // Add icon
+            mapRef.current!.addLayer({
+              id: `${category}-symbols-icon`,
+              type: "symbol",
+              source: `${category}-symbols`,
+              layout: {
+                "text-field": config.icon,
+                "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+                "text-size": 8,
+                "text-allow-overlap": true
+              },
+              paint: {
+                "text-color": "#fff"
+              }
+            });
+
+            // Add labels
+            mapRef.current!.addLayer({
+              id: `${category}-symbols-labels`,
+              type: "symbol",
+              source: `${category}-symbols`,
+              layout: {
+                "text-field": ["get", "name"],
+                "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                "text-offset": [0, 1],
+                "text-anchor": "top",
+                "text-size": 8,
+                "text-allow-overlap": false
+              },
+              paint: {
+                "text-color": config.color,
+                "text-halo-color": "#fff",
+                "text-halo-width": 1
+              }
+            });
+          });
+
+          // Animate hazard circles
           function animatePolygons() {
             t = (t + 0.01) % (2 * Math.PI);
             const scale = 2 + 1 * Math.sin(t);
@@ -420,6 +475,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
             requestAnimationFrame(animatePolygons);
           }
           animatePolygons();
+
         } catch (err) {
           console.error("Failed to fetch hazards:", err);
         }
