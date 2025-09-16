@@ -149,7 +149,7 @@ const SmartTouristApp: React.FC = () => {
   const [dragStartX, setDragStartX] = useState(0);
 
   // App data
-  const [currentLocation] = useState("Dubai Marina, UAE");
+  const [currentLocation] = useState("Meghalaya");
   const [safetyScore] = useState(85);
 
   // Map refs
@@ -162,31 +162,31 @@ const SmartTouristApp: React.FC = () => {
   const [groupMembers] = useState<GroupMember[]>([
     {
       id: 1,
-      name: "Sarah Chen",
+      name: "Biplab Mohanty",
       status: "safe",
       lastSeen: "2 min ago",
-      location: "Burj Khalifa",
+      location: "OT Market",
     },
     {
       id: 2,
-      name: "Mike Johnson",
+      name: "Pratik Das",
       status: "safe",
       lastSeen: "5 min ago",
-      location: "Dubai Mall",
+      location: "Imphal Mall",
     },
     {
       id: 3,
-      name: "Lisa Park",
+      name: "Lina Dey",
       status: "warning",
       lastSeen: "15 min ago",
       location: "Unknown",
     },
     {
       id: 4,
-      name: "David Kim",
+      name: "Harsh Raj",
       status: "safe",
       lastSeen: "1 min ago",
-      location: "Dubai Marina",
+      location: "Park",
     },
   ]);
 

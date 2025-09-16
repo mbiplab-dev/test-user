@@ -1,10 +1,9 @@
 // =============================================================================
-// SOS SERVICE (Frontend)
+// SOS SERVICE (Frontend) - Updated with Complete i18n Implementation
 // File path: src/services/sosService.ts
 // =============================================================================
 
 import authService from './authService';
-
 
 // Types
 interface SOSComplaint {
@@ -390,28 +389,30 @@ class SOSService {
     return `Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
   }
 
-  // Validate complaint data before submission
-  validateComplaintData(data: SubmitComplaintData): { isValid: boolean; errors: string[] } {
+  // Validate complaint data before submission (overloaded for backward compatibility)
+  validateComplaintData(data: SubmitComplaintData): { isValid: boolean; errors: string[] };
+  validateComplaintData(data: SubmitComplaintData, t: any): { isValid: boolean; errors: string[] };
+  validateComplaintData(data: SubmitComplaintData, t?: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
     if (!data.category) {
-      errors.push('Category is required');
+      errors.push(t ? t('sos.selectCategory') : 'Category is required');
     }
 
     if (!data.title?.trim()) {
-      errors.push('Title is required');
+      errors.push(t ? t('trip.validationErrors.nameRequired') : 'Title is required');
     }
 
     if (!data.description?.trim()) {
-      errors.push('Description is required');
+      errors.push(t ? `${t('common.description')} ${t('common.required').toLowerCase()}` : 'Description is required');
     }
 
     if (!data.contactInfo?.trim()) {
-      errors.push('Contact information is required');
+      errors.push(t ? `${t('sos.contactInfo')} ${t('common.required').toLowerCase()}` : 'Contact information is required');
     }
 
     if (!data.location?.address?.trim()) {
-      errors.push('Location address is required');
+      errors.push(t ? `${t('common.location')} ${t('common.required').toLowerCase()}` : 'Location address is required');
     }
 
     if (data.title && data.title.length > 200) {
@@ -428,13 +429,15 @@ class SOSService {
     };
   }
 
-  // Get help category options
+  // Get help category options (with i18n keys)
   getHelpCategories() {
     return [
       {
         id: 'missing_person',
         title: 'Missing Person',
         description: 'Report a missing group member or individual',
+        titleKey: 'sosHistory.missingPerson',
+        descriptionKey: 'sos.emergencyTypes.missing_person',
         urgency: 'high' as const,
         icon: '👤'
       },
@@ -442,6 +445,8 @@ class SOSService {
         id: 'fire_emergency',
         title: 'Fire Emergency',
         description: 'Fire incident or smoke detection',
+        titleKey: 'sosHistory.fireEmergency',
+        descriptionKey: 'sos.emergencyTypes.fire_emergency',
         urgency: 'critical' as const,
         icon: '🔥'
       },
@@ -449,6 +454,8 @@ class SOSService {
         id: 'theft_robbery',
         title: 'Theft/Robbery',
         description: 'Report stolen items or robbery incident',
+        titleKey: 'sosHistory.theftRobbery',
+        descriptionKey: 'sos.emergencyTypes.theft_robbery',
         urgency: 'high' as const,
         icon: '🚨'
       },
@@ -456,6 +463,8 @@ class SOSService {
         id: 'accident',
         title: 'Accident',
         description: 'Traffic accident or injury incident',
+        titleKey: 'sosHistory.accident',
+        descriptionKey: 'sos.emergencyTypes.accident',
         urgency: 'critical' as const,
         icon: '🚗'
       },
@@ -463,6 +472,8 @@ class SOSService {
         id: 'medical_help',
         title: 'Medical Help',
         description: 'Non-emergency medical assistance',
+        titleKey: 'sosHistory.medicalHelp',
+        descriptionKey: 'sos.emergencyTypes.medical',
         urgency: 'medium' as const,
         icon: '🏥'
       },
@@ -470,10 +481,71 @@ class SOSService {
         id: 'general_help',
         title: 'General Help',
         description: 'Other assistance or information needed',
+        titleKey: 'sosHistory.generalHelp',
+        descriptionKey: 'sos.emergencyTypes.other',
         urgency: 'low' as const,
         icon: '🆘'
       }
     ];
+  }
+
+  // Get translated status text
+  getStatusText(status: string, t: any): string {
+    switch (status) {
+      case 'submitted': return t('sosHistory.submitted');
+      case 'under_review': return t('sosHistory.underReview');
+      case 'assigned': return t('sosHistory.assigned');
+      case 'in_progress': return t('sosHistory.inProgress');
+      case 'resolved': return t('sosHistory.resolved');
+      case 'closed': return t('sosHistory.closed');
+      default: return status;
+    }
+  }
+
+  // Get translated urgency text
+  getUrgencyText(urgency: string, t: any): string {
+    switch (urgency) {
+      case 'low': return t('sos.urgency.low');
+      case 'medium': return t('sos.urgency.medium');
+      case 'high': return t('sos.urgency.high');
+      case 'critical': return t('sos.urgency.critical');
+      default: return urgency;
+    }
+  }
+
+  // Get translated category text
+  getCategoryText(category: string, t: any): string {
+    switch (category) {
+      case 'missing_person': return t('sosHistory.missingPerson');
+      case 'fire_emergency': return t('sosHistory.fireEmergency');
+      case 'theft_robbery': return t('sosHistory.theftRobbery');
+      case 'accident': return t('sosHistory.accident');
+      case 'medical_help': return t('sosHistory.medicalHelp');
+      case 'general_help': return t('sosHistory.generalHelp');
+      default: return category;
+    }
+  }
+
+  // Format time with i18n support
+  formatRelativeTime(dateString: string, t: any): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+
+    if (diffDays === 0) {
+      if (diffHours === 0) {
+        return t('emergencyContacts.justNow');
+      }
+      return t('emergencyContacts.hoursAgo', { hours: diffHours });
+    } else if (diffDays === 1) {
+      return 'Yesterday';
+    } else if (diffDays < 7) {
+      return t('emergencyContacts.daysAgo', { days: diffDays });
+    } else {
+      return date.toLocaleDateString();
+    }
   }
 }
 

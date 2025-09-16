@@ -1,5 +1,5 @@
 // =============================================================================
-// COMPONENT: Quick Check-in Screen
+// COMPONENT: Quick Check-in Screen with i18next
 // File path: src/components/screens/QuickCheckinScreen.tsx
 // =============================================================================
 
@@ -38,20 +38,20 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
   const handleCheckin = () => {
     setIsCheckedIn(true);
     setLastCheckin(new Date());
-    toast.success(t('success.locationShared'));
+    toast.success(t('checkin.locationShared'));
   };
 
   const handleShareLocation = () => {
     if (navigator.share) {
       navigator.share({
-        title: t('home.quickCheckin'),
+        title: t('checkin.quickCheckin'),
         text: t('map.currentLocation') + ': ' + currentLocation,
         url: `https://maps.google.com/?q=${encodeURIComponent(currentLocation)}`
       });
     } else {
       // Fallback for browsers that don't support Web Share API
       navigator.clipboard.writeText(currentLocation);
-      toast.success(t('success.locationShared'));
+      toast.success(t('checkin.locationShared'));
     }
   };
 
@@ -75,7 +75,7 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
 
   return (
     <div className="space-y-6">
-      <Header title={t('home.quickCheckin')} onBack={onBack} />
+      <Header title={t('checkin.quickCheckin')} onBack={onBack} />
       
       <div className="px-4 space-y-6">
         {/* Current Status */}
@@ -84,7 +84,7 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
             <div className="flex items-center justify-center space-x-2 mb-2">
               <MapPin className="text-blue-600" size={20} />
               <h3 className="text-lg font-semibold text-gray-900">
-                {t('map.currentLocation')}
+                {t('checkin.currentLocation')}
               </h3>
             </div>
             <p className="text-gray-600">{currentLocation}</p>
@@ -102,7 +102,7 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
                 <CheckCircle className="text-green-600" size={20} />
                 <div>
                   <p className="text-green-800 font-medium">
-                    {t('success.locationShared')}
+                    {t('checkin.locationShared')}
                   </p>
                   <p className="text-green-600 text-sm">
                     {lastCheckin?.toLocaleTimeString()}
@@ -117,14 +117,14 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
           <div className="text-center mb-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {t('home.scanLocationCode')}
+              {t('checkin.scanLocationCode')}
             </h3>
             <p className="text-sm text-gray-600">
-              Show this code to verify your location
+              {t('checkin.showCode')}
             </p>
           </div>
 
-          <QRCodeSVG  />
+          <QRCodeSVG />
 
           <div className="mt-4 p-3 bg-gray-50 rounded-xl">
             <p className="text-xs text-gray-500 text-center font-mono break-all">
@@ -140,24 +140,24 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
             className="w-full bg-blue-600 text-white rounded-2xl p-4 font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
           >
             <CheckCircle size={20} />
-            <span>{t('home.quickCheckin')}</span>
+            <span>{t('checkin.quickCheckin')}</span>
           </button>
 
           <div className="grid grid-cols-3 gap-3">
             <button
-              onClick={() => toast.success('Camera feature coming soon')}
+              onClick={() => toast.success(t('checkin.cameraFeature'))}
               className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center space-y-2 hover:bg-gray-50 transition-colors"
             >
               <Camera className="text-gray-600" size={24} />
-              <span className="text-xs text-gray-600">Scan Code</span>
+              <span className="text-xs text-gray-600">{t('checkin.scanCode')}</span>
             </button>
 
             <button
-              onClick={() => toast.success('Download feature coming soon')}
+              onClick={() => toast.success(t('checkin.downloadFeature'))}
               className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center space-y-2 hover:bg-gray-50 transition-colors"
             >
               <Download className="text-gray-600" size={24} />
-              <span className="text-xs text-gray-600">Save</span>
+              <span className="text-xs text-gray-600">{t('checkin.save')}</span>
             </button>
 
             <button
@@ -165,7 +165,7 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
               className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center space-y-2 hover:bg-gray-50 transition-colors"
             >
               <Share className="text-gray-600" size={24} />
-              <span className="text-xs text-gray-600">Share</span>
+              <span className="text-xs text-gray-600">{t('checkin.share')}</span>
             </button>
           </div>
         </div>
@@ -173,13 +173,13 @@ const QuickCheckinScreen: React.FC<QuickCheckinScreenProps> = ({
         {/* Recent Check-ins */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Recent Check-ins
+            {t('checkin.recentCheckins')}
           </h3>
           <div className="space-y-3">
             {[
-              { location: 'Burj Khalifa', time: '2 hours ago', status: 'verified' },
-              { location: 'Dubai Mall', time: '5 hours ago', status: 'verified' },
-              { location: 'Palm Jumeirah', time: '1 day ago', status: 'verified' }
+              { location: 'OT Market', time: '2 hours ago', status: 'verified' },
+              { location: 'Imphal Mall', time: '5 hours ago', status: 'verified' },
+              { location: 'Park', time: '1 day ago', status: 'verified' }
             ].map((checkin, index) => (
               <div key={index} className="flex items-center justify-between py-2">
                 <div className="flex items-center space-x-3">

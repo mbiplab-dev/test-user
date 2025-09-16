@@ -1,5 +1,5 @@
 // =============================================================================
-// Updated HomeScreen.tsx with Trip Logic and Backend Integration
+// Updated HomeScreen.tsx with Complete i18n Implementation
 // File path: src/components/screens/HomeScreen.tsx
 // =============================================================================
 
@@ -46,7 +46,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   
   // Get current user for greeting
   const currentUser = authService.getUser();
-  const userName = currentUser?.username || 'User';
+  const userName = currentUser?.username || t('common.name');
   
   // Get localized greeting based on time of day
   const greeting = getTimeBasedGreeting(t);
@@ -81,10 +81,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     
     try {
       await tripService.completeTrip(activeTrip._id);
-      toast.success('Trip completed successfully!');
+      toast.success(t('success.tripCompleted'));
       await loadActiveTrip(); // Refresh trip status
     } catch (error) {
-      toast.error('Failed to complete trip');
+      toast.error(t('errors.failedToComplete'));
       console.error('Complete trip error:', error);
     }
   };
@@ -139,7 +139,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
                 <MapPin size={16} />
                 <span className="text-sm">{currentLocation}</span>
               </div>
-              <p className="text-gray-300 text-sm">Ready to plan your next adventure?</p>
+              <p className="text-gray-300 text-sm">{t('home.readyForAdventure')}</p>
             </div>
           </div>
         </div>
@@ -199,7 +199,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
                 <span className="text-sm">{currentLocation}</span>
               </div>
             </div>
-            <button className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+            <button className="p-3 bg-white/10 rounded-xl backdrop-blur-sm" aria-label={t('accessibility.notificationBadge', { count: 0 })}>
               <Bell size={20} />
             </button>
           </div>
@@ -252,14 +252,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold">{getDaysRemaining(activeTrip?.endDate || '')}</div>
-            <div className="text-xs text-green-100">days left</div>
+            <div className="text-xs text-green-100">{t('trip.daysLeft')}</div>
           </div>
         </div>
 
         {/* Trip Progress */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span>Trip Progress</span>
+            <span>{t('trip.progress')}</span>
             <span>{calculateTripProgress(activeTrip?.startDate || '', activeTrip?.endDate || '')}%</span>
           </div>
           <div className="w-full bg-white/20 rounded-full h-2">
@@ -278,14 +278,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
             onClick={onTripDetailsPress}
             className="flex-1 bg-white/20 backdrop-blur-sm text-white py-2 px-4 rounded-xl text-sm font-medium hover:bg-white/30 transition-colors"
           >
-            View Details
+            {t('trip.viewDetails')}
           </button>
           <button
             onClick={handleTripComplete}
             className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-xl text-sm font-medium transition-colors flex items-center space-x-1"
           >
             <CheckCircle size={16} />
-            <span>Complete</span>
+            <span>{t('trip.complete')}</span>
           </button>
         </div>
       </div>
@@ -295,19 +295,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm text-center">
           <Users className="text-blue-600 mx-auto mb-1" size={20} />
           <div className="text-lg font-bold text-gray-900">{activeTrip?.members.length || 0}</div>
-          <div className="text-xs text-gray-600">Members</div>
+          <div className="text-xs text-gray-600">{t('trip.members')}</div>
         </div>
         <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm text-center">
           <MapPin className="text-green-600 mx-auto mb-1" size={20} />
           <div className="text-lg font-bold text-gray-900">{activeTrip?.itinerary.length || 0}</div>
-          <div className="text-xs text-gray-600">Places</div>
+          <div className="text-xs text-gray-600">{t('trip.places')}</div>
         </div>
         <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm text-center">
           <Clock className="text-purple-600 mx-auto mb-1" size={20} />
           <div className="text-lg font-bold text-gray-900">
             {activeTrip ? Math.ceil((new Date(activeTrip.endDate).getTime() - new Date(activeTrip.startDate).getTime()) / (1000 * 60 * 60 * 24)) : 0}
           </div>
-          <div className="text-xs text-gray-600">Days</div>
+          <div className="text-xs text-gray-600">{t('trip.days')}</div>
         </div>
       </div>
 
@@ -329,8 +329,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         />
         <QuickActionButton
           icon={Calendar}
-          title="Trip Details"
-          subtitle="View itinerary"
+          title={t('trip.tripDetails')}
+          subtitle={t('trip.viewItinerary')}
           color="bg-green-500"
           onClick={onTripDetailsPress}
         />

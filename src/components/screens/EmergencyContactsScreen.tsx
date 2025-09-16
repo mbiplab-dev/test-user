@@ -1,5 +1,5 @@
 // =============================================================================
-// COMPONENT: Emergency Contacts Screen
+// COMPONENT: Emergency Contacts Screen with i18next
 // File path: src/components/screens/EmergencyContactsScreen.tsx
 // =============================================================================
 
@@ -29,19 +29,19 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
   const [contacts, setContacts] = useState<EmergencyContact[]>([
     {
       id: 1,
-      name: 'Sarah Johnson',
-      relationship: 'Spouse',
-      phone: '+1-555-0123',
-      email: 'sarah@email.com',
+      name: 'Biplab Mohanty',
+      relationship: t('emergencyContacts.brother'),
+      phone: '94712837489',
+      email: 'biplab@email.com',
       isPrimary: true,
       isLocal: false,
       lastContacted: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
     },
     {
       id: 2,
-      name: 'Dr. Michael Chen',
-      relationship: 'Doctor',
-      phone: '+1-555-0456',
+      name: 'Dr. Prerna Chen',
+      relationship: t('emergencyContacts.doctor'),
+      phone: '9464723987',
       email: 'dr.chen@hospital.com',
       isPrimary: false,
       isLocal: true,
@@ -49,18 +49,18 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
     },
     {
       id: 3,
-      name: 'Emirates Support',
-      relationship: 'Travel Insurance',
-      phone: '+971-4-316-6666',
+      name: 'Travel Support',
+      relationship: t('emergencyContacts.travelSupport'),
+      phone: '9342423423',
       isPrimary: false,
       isLocal: true
     },
     {
       id: 4,
-      name: 'John Smith',
-      relationship: 'Emergency Contact',
-      phone: '+1-555-0789',
-      email: 'john@email.com',
+      name: 'Anushka Roy',
+      relationship: t('trip.emergencyContact'),
+      phone: '83490231443',
+      email: 'anushka@email.com',
       isPrimary: false,
       isLocal: false
     }
@@ -78,30 +78,30 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
     
     // In a real app, this would initiate a call
     window.open(`tel:${contact.phone}`);
-    toast.success(`Calling ${contact.name}`);
+    toast.success(t('emergencyContacts.calling', { name: contact.name }));
   };
 
   const handleEdit = (contact: EmergencyContact) => {
     // In a real app, this would open an edit modal
-    if(contact){toast.success('Edit functionality coming soon');}
+    if(contact){toast.success(t('emergencyContacts.editFunctionality'));}
   };
 
   const handleDelete = (contactId: number) => {
     setContacts(prev => prev.filter(c => c.id !== contactId));
-    toast.success('Contact removed');
+    toast.success(t('emergencyContacts.contactRemoved'));
   };
 
   const handleAddContact = () => {
     // In a real app, this would open an add contact modal
-    toast.success('Add contact functionality coming soon');
+    toast.success(t('emergencyContacts.addContactFunctionality'));
   };
 
   const getFilteredContacts = () => {
     switch (selectedTab) {
       case 'personal':
-        return contacts.filter(c => ['Spouse', 'Emergency Contact', 'Parent', 'Sibling'].includes(c.relationship));
+        return contacts.filter(c => [t('trip.spouse'), t('trip.emergencyContact'), t('trip.parent'), t('trip.sibling')].includes(c.relationship));
       case 'official':
-        return contacts.filter(c => ['Doctor', 'Travel Insurance', 'Embassy'].includes(c.relationship));
+        return contacts.filter(c => [t('emergencyContacts.doctor'), t('emergencyContacts.travelInsurance'), 'Embassy'].includes(c.relationship));
       case 'local':
         return contacts.filter(c => c.isLocal);
       default:
@@ -110,22 +110,22 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
   };
 
   const formatLastContacted = (date?: Date) => {
-    if (!date) return 'Never contacted';
+    if (!date) return t('emergencyContacts.neverContacted');
     
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     
-    if (hours < 1) return 'Just now';
-    if (hours < 24) return `${hours}h ago`;
+    if (hours < 1) return t('emergencyContacts.justNow');
+    if (hours < 24) return t('emergencyContacts.hoursAgo', { hours });
     const days = Math.floor(hours / 24);
-    return `${days}d ago`;
+    return t('emergencyContacts.daysAgo', { days });
   };
 
   return (
     <div className="space-y-6">
       <Header 
-        title={t('notifications.emergencyContacts')} 
+        title={t('emergencyContacts.emergencyContacts')} 
         onBack={onBack}
         rightAction={
           <button 
@@ -145,27 +145,17 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
               <AlertTriangle className="text-white" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Quick Emergency</h2>
-              <p className="text-red-100">Local emergency services</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <button 
-              onClick={() => window.open('tel:999')}
-              className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/30 transition-colors"
-            >
-              <Shield className="text-white mb-2" size={20} />
-              <p className="font-semibold">Police</p>
+              <h2 className="text-xl font-bold">{t('emergencyContacts.quickEmergency')}</h2>
+              <p className="font-semibold">{t('emergencyContacts.police')}</p>
               <p className="text-sm text-red-100">999</p>
-            </button>
+            </div>
             
             <button 
               onClick={() => window.open('tel:998')}
               className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/30 transition-colors"
             >
               <Plus className="text-white mb-2" size={20} />
-              <p className="font-semibold">Medical</p>
+              <p className="font-semibold">{t('emergencyContacts.medical')}</p>
               <p className="text-sm text-red-100">998</p>
             </button>
           </div>
@@ -174,9 +164,9 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
         {/* Filter Tabs */}
         <div className="flex bg-gray-100 rounded-2xl p-1">
           {[
-            { key: 'personal' as const, label: 'Personal', icon: Users },
-            { key: 'official' as const, label: 'Official', icon: Shield },
-            { key: 'local' as const, label: 'Local', icon: MapPin }
+            { key: 'personal' as const, label: t('emergencyContacts.personal'), icon: Users },
+            { key: 'official' as const, label: t('emergencyContacts.official'), icon: Shield },
+            { key: 'local' as const, label: t('emergencyContacts.local'), icon: MapPin }
           ].map((tab) => (
             <button
               key={tab.key}
@@ -206,7 +196,7 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
                     )}
                     {contact.isLocal && (
                       <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
-                        Local
+                        {t('emergencyContacts.local')}
                       </span>
                     )}
                   </div>
@@ -218,7 +208,7 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
                   <div className="flex items-center space-x-1 mt-2">
                     <Clock size={12} className="text-gray-400" />
                     <span className="text-xs text-gray-400">
-                      Last contacted: {formatLastContacted(contact.lastContacted)}
+                      {t('emergencyContacts.lastContacted', { time: formatLastContacted(contact.lastContacted) })}
                     </span>
                   </div>
                 </div>
@@ -244,7 +234,7 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <Phone size={18} />
-                <span>Call {contact.name}</span>
+                <span>{t('group.call')} {contact.name}</span>
               </button>
             </div>
           ))}
@@ -252,12 +242,12 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
 
         {/* Additional Services */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Services</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('emergencyContacts.additionalServices')}</h3>
           <div className="space-y-3">
             {[
-              { name: 'Tourist Helpline', number: '+971-600-555-559', description: '24/7 tourist assistance' },
-              { name: 'Embassy Hotline', number: '+971-4-397-1777', description: 'US Embassy UAE' },
-              { name: 'Travel Insurance', number: '+971-4-316-6666', description: 'Emergency travel support' }
+              { name: t('emergencyContacts.touristHelpline'), number: '+971-600-555-559', description: t('emergencyContacts.touristAssistance') },
+              { name: t('emergencyContacts.embassyHotline'), number: '+971-4-397-1777', description: 'US Embassy UAE' },
+              { name: t('emergencyContacts.travelInsurance'), number: '+971-4-316-6666', description: t('emergencyContacts.emergencyTravelSupport') }
             ].map((service, index) => (
               <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
                 <div className="flex-1">
@@ -280,13 +270,13 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
         <div className="bg-blue-50 rounded-2xl p-4 border border-blue-200">
           <div className="flex items-center space-x-2 mb-3">
             <Shield className="text-blue-600" size={20} />
-            <h3 className="font-semibold text-blue-800">Emergency Contact Tips</h3>
+            <h3 className="font-semibold text-blue-800">{t('emergencyContacts.safetyTips')}</h3>
           </div>
           <div className="space-y-2 text-sm text-blue-700">
-            <p>• Keep at least 2 emergency contacts from different locations</p>
-            <p>• Ensure contacts know your travel itinerary</p>
-            <p>• Test contact numbers before traveling</p>
-            <p>• Keep physical copies of important numbers</p>
+            <p>• {t('emergencyContacts.tip1')}</p>
+            <p>• {t('emergencyContacts.tip2')}</p>
+            <p>• {t('emergencyContacts.tip3')}</p>
+            <p>• {t('emergencyContacts.tip4')}</p>
           </div>
         </div>
       </div>

@@ -172,7 +172,6 @@ class TripService {
         throw new Error(error.message || 'Failed to check active trip');
       }
       const rs = await response.json()
-      console.log(rs)
       return rs;
     } catch (error) {
       console.error('Check active trip error:', error);

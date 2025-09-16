@@ -53,7 +53,7 @@ const fetchNotifications = async (): Promise<Notification[]> => {
         id: "1",
         type: "info",
         title: "Trip Starting Soon",
-        message: "Your trip to Dubai is starting tomorrow!",
+        message: "Your trip to Meghalaya is starting tomorrow!",
         time: new Date().toISOString(),
         priority: "high",
         isRead: false,

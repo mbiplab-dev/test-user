@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Bell,
@@ -18,6 +19,7 @@ import notificationService from "../../services/notificationService";
 import toast from "react-hot-toast";
 
 const NotificationScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -71,6 +73,21 @@ const NotificationScreen: React.FC = () => {
     }
   };
 
+  const getPriorityText = (priority: Notification["priority"]) => {
+    switch (priority) {
+      case "critical":
+        return t('notifications.priority.critical');
+      case "high":
+        return t('notifications.priority.high');
+      case "medium":
+        return t('notifications.priority.medium');
+      case "low":
+        return t('notifications.priority.low');
+      default:
+        return priority;
+    }
+  };
+
   const formatTime = (timeString: string) => {
     try {
       const date = new Date(timeString);
@@ -83,9 +100,9 @@ const NotificationScreen: React.FC = () => {
         const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
         return `${diffInMinutes}m ago`;
       } else if (diffInHours < 24) {
-        return `${Math.floor(diffInHours)}h ago`;
+        return t('emergencyContacts.hoursAgo', { hours: Math.floor(diffInHours) });
       } else if (diffInDays < 7) {
-        return `${Math.floor(diffInDays)}d ago`;
+        return t('emergencyContacts.daysAgo', { days: Math.floor(diffInDays) });
       } else {
         return date.toLocaleDateString();
       }
@@ -97,7 +114,7 @@ const NotificationScreen: React.FC = () => {
   const emergencyContacts = [
     {
       icon: Phone,
-      title: "Emergency Services",
+      title: t('notifications.emergencyContacts'),
       subtitle: "999",
       bgColor: "bg-red-50 hover:bg-red-100",
       iconColor: "text-red-600",
@@ -106,7 +123,7 @@ const NotificationScreen: React.FC = () => {
     },
     {
       icon: Shield,
-      title: "Tourist Police",
+      title: t('notifications.touristPolice'),
       subtitle: "+971-4-TOURIST",
       bgColor: "bg-blue-50 hover:bg-blue-100",
       iconColor: "text-blue-600",
@@ -115,7 +132,7 @@ const NotificationScreen: React.FC = () => {
     },
     {
       icon: Heart,
-      title: "Medical Emergency",
+      title: t('notifications.medical'),
       subtitle: "+971-800-HEALTH",
       bgColor: "bg-green-50 hover:bg-green-100",
       iconColor: "text-green-600",
@@ -124,8 +141,8 @@ const NotificationScreen: React.FC = () => {
     },
     {
       icon: Headphones,
-      title: "Support",
-      subtitle: "24x7 Help",
+      title: t('notifications.support'),
+      subtitle: t('notifications.help24x7'),
       bgColor: "bg-purple-50 hover:bg-purple-100",
       iconColor: "text-purple-600",
       textColor: "text-purple-900",
@@ -144,7 +161,7 @@ const NotificationScreen: React.FC = () => {
       setUnreadCount(unread);
     } catch (error) {
       console.error("Failed to load notifications:", error);
-      toast.error("Failed to load notifications");
+      toast.error(t('errors.networkError'));
     } finally {
       setLoading(false);
     }
@@ -163,10 +180,10 @@ const NotificationScreen: React.FC = () => {
         )
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
-      toast.success("Notification marked as read");
+      toast.success(t('success.settingsSaved'));
     } catch (error) {
       console.error("Failed to mark notification as read:", error);
-      toast.error("Failed to mark as read");
+      toast.error(t('errors.somethingWentWrong'));
     }
   };
 
@@ -179,10 +196,10 @@ const NotificationScreen: React.FC = () => {
         prev.map(notif => ({ ...notif, isRead: true }))
       );
       setUnreadCount(0);
-      toast.success("All notifications marked as read");
+      toast.success(t('success.settingsSaved'));
     } catch (error) {
       console.error("Failed to mark all as read:", error);
-      toast.error("Failed to mark all as read");
+      toast.error(t('errors.somethingWentWrong'));
     }
   };
 
@@ -197,17 +214,17 @@ const NotificationScreen: React.FC = () => {
       if (deletedNotification && !deletedNotification.isRead) {
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
-      toast.success("Notification deleted");
+      toast.success(t('success.settingsSaved'));
     } catch (error) {
       console.error("Failed to delete notification:", error);
-      toast.error("Failed to delete notification");
+      toast.error(t('errors.somethingWentWrong'));
     }
   };
 
   // Refresh notifications
   const handleRefresh = async () => {
     await loadNotifications();
-    toast.success("Notifications refreshed");
+    toast.success(t('success.settingsSaved'));
   };
 
   // Initial load
@@ -218,23 +235,24 @@ const NotificationScreen: React.FC = () => {
   return (
     <div className="space-y-4">
       <Header
-        title={`Notifications ${unreadCount > 0 ? `(${unreadCount})` : ""}`}
+        title={`${t('notifications.notifications')} ${unreadCount > 0 ? `(${unreadCount})` : ""}`}
         rightAction={
           <div className="flex space-x-3">
             <button
               className="text-sm text-blue-600 font-medium flex items-center space-x-1"
               onClick={handleRefresh}
               disabled={loading}
+              aria-label={t('common.update')}
             >
               <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-              <span>Refresh</span>
+              <span>{t('common.update')}</span>
             </button>
             <button
               className="text-sm text-blue-600 font-medium"
               onClick={handleMarkAllAsRead}
               disabled={unreadCount === 0 || loading}
             >
-              Mark All Read
+              {t('notifications.markAllRead')}
             </button>
           </div>
         }
@@ -245,7 +263,7 @@ const NotificationScreen: React.FC = () => {
         {loading && (
           <div className="flex items-center justify-center py-8">
             <RefreshCw className="animate-spin text-blue-600" size={24} />
-            <span className="ml-2 text-gray-600">Loading notifications...</span>
+            <span className="ml-2 text-gray-600">{t('common.loading')}</span>
           </div>
         )}
 
@@ -253,7 +271,7 @@ const NotificationScreen: React.FC = () => {
         {!loading && notifications.length === 0 && (
           <div className="text-center py-8">
             <Bell className="mx-auto text-gray-400 mb-4" size={48} />
-            <p className="text-gray-500">No notifications found</p>
+            <p className="text-gray-500">{t('notifications.noNotifications')}</p>
           </div>
         )}
 
@@ -293,6 +311,7 @@ const NotificationScreen: React.FC = () => {
                         onClick={() => handleDeleteNotification(notif.id)}
                         className="text-gray-400 hover:text-red-500 ml-2"
                         disabled={loading}
+                        aria-label={t('common.delete')}
                       >
                         <Trash2 size={16} />
                       </button>
@@ -318,7 +337,7 @@ const NotificationScreen: React.FC = () => {
                               notif.priority
                             )}`}
                           >
-                            {notif.priority}
+                            {getPriorityText(notif.priority)}
                           </span>
                         )}
                         {!notif.isRead && (
@@ -327,7 +346,7 @@ const NotificationScreen: React.FC = () => {
                             className="text-xs text-blue-600 hover:text-blue-800"
                             disabled={loading}
                           >
-                            Mark as read
+                            {t('notifications.actions.dismiss')}
                           </button>
                         )}
                       </div>
@@ -341,13 +360,14 @@ const NotificationScreen: React.FC = () => {
 
         {/* Emergency Contacts */}
         <div className="bg-white rounded-2xl p-4 border border-gray-100">
-          <h3 className="font-semibold text-gray-900 mb-3">Emergency Contacts</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">{t('emergencyContacts.emergencyContacts')}</h3>
           <div className="grid grid-cols-2 gap-3">
             {emergencyContacts.map((contact, index) => (
               <button
                 key={index}
                 className={`flex items-center justify-between p-3 rounded-xl transition-colors ${contact.bgColor}`}
                 disabled={loading}
+                aria-label={`${t('notifications.actions.callNow')} ${contact.title}`}
               >
                 <div className="flex items-center space-x-2">
                   <contact.icon className={contact.iconColor} size={18} />

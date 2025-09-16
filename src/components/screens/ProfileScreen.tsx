@@ -61,8 +61,9 @@ const ProfileScreen: React.FC = () => {
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
-      await authService.logout();
       navigate('/login', { replace: true });
+      await authService.logout();
+      
     } catch (error) {
       console.error('Logout failed:', error);
       // Even if logout API fails, clear local data and redirect

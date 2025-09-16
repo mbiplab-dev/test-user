@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Clock,
-  MessageCircle,
-  Star,
   AlertTriangle,
   CheckCircle,
   Search,
@@ -24,6 +23,7 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
   onBack,
   onComplaintSelect
 }) => {
+  const { t } = useTranslation();
   const [complaints, setComplaints] = useState<SOSComplaint[]>([]);
   const [stats, setStats] = useState<ComplaintStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +52,7 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
       setTotalPages(response.pagination?.totalPages || 1);
     } catch (error: any) {
       console.error('Failed to load complaints:', error);
-      toast.error('Failed to load complaint history');
+      toast.error(t('errors.failedToLoadComplaints'));
     } finally {
       setIsLoading(false);
     }
@@ -129,17 +129,15 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
     complaint.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log("filteredComplaints", filteredComplaints)
-
   return (
     <div className="space-y-4">
       <Header
-        title="Help Request History"
+        title={t('sosHistory.helpRequestHistory')}
         showBack={true}
         onBack={onBack}
         rightAction={
           <button className="text-blue-600 font-medium">
-            Export
+            {t('common.export')}
           </button>
         }
       />
@@ -150,26 +148,26 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
           <div className="bg-white rounded-2xl p-4 shadow-sm">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
               <BarChart3 size={18} className="mr-2" />
-              Overview
+              {t('sosHistory.overview')}
             </h3>
             <div className="grid grid-cols-4 gap-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
-                <div className="text-xs text-gray-600">Total</div>
+                <div className="text-xs text-gray-600">{t('sosHistory.total')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{stats.resolved}</div>
-                <div className="text-xs text-gray-600">Resolved</div>
+                <div className="text-xs text-gray-600">{t('sosHistory.resolved')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">{stats.emergency}</div>
-                <div className="text-xs text-gray-600">Emergency</div>
+                <div className="text-xs text-gray-600">{t('sosHistory.emergency')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-600">
                   {stats.averageRating ? stats.averageRating.toFixed(1) : '0.0'}
                 </div>
-                <div className="text-xs text-gray-600">Avg Rating</div>
+                <div className="text-xs text-gray-600">{t('sosHistory.avgRating')}</div>
               </div>
             </div>
           </div>
@@ -185,7 +183,7 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search complaints..."
+                placeholder={t('sosHistory.searchComplaints')}
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -197,13 +195,13 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="flex-1 p-2 border border-gray-200 rounded-lg text-sm"
               >
-                <option value="">All Status</option>
-                <option value="submitted">Submitted</option>
-                <option value="under_review">Under Review</option>
-                <option value="assigned">Assigned</option>
-                <option value="in_progress">In Progress</option>
-                <option value="resolved">Resolved</option>
-                <option value="closed">Closed</option>
+                <option value="">{t('sosHistory.allStatus')}</option>
+                <option value="submitted">{t('sosHistory.submitted')}</option>
+                <option value="under_review">{t('sosHistory.underReview')}</option>
+                <option value="assigned">{t('sosHistory.assigned')}</option>
+                <option value="in_progress">{t('sosHistory.inProgress')}</option>
+                <option value="resolved">{t('sosHistory.resolved')}</option>
+                <option value="closed">{t('sosHistory.closed')}</option>
               </select>
 
               <select
@@ -211,13 +209,13 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                 onChange={(e) => setFilterCategory(e.target.value)}
                 className="flex-1 p-2 border border-gray-200 rounded-lg text-sm"
               >
-                <option value="">All Categories</option>
-                <option value="missing_person">Missing Person</option>
-                <option value="fire_emergency">Fire Emergency</option>
-                <option value="theft_robbery">Theft/Robbery</option>
-                <option value="accident">Accident</option>
-                <option value="medical_help">Medical Help</option>
-                <option value="general_help">General Help</option>
+                <option value="">{t('sosHistory.allCategories')}</option>
+                <option value="missing_person">{t('sosHistory.missingPerson')}</option>
+                <option value="fire_emergency">{t('sosHistory.fireEmergency')}</option>
+                <option value="theft_robbery">{t('sosHistory.theftRobbery')}</option>
+                <option value="accident">{t('sosHistory.accident')}</option>
+                <option value="medical_help">{t('sosHistory.medicalHelp')}</option>
+                <option value="general_help">{t('sosHistory.generalHelp')}</option>
               </select>
 
               {(filterStatus || filterCategory || searchTerm) && (
@@ -225,7 +223,7 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                   onClick={handleClearFilters}
                   className="px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg"
                 >
-                  Clear
+                  {t('sosHistory.clear')}
                 </button>
               )}
             </div>
@@ -237,7 +235,7 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
           {isLoading ? (
             <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
               <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading complaint history...</p>
+              <p className="text-gray-600">{t('sosHistory.loadingHistory')}</p>
             </div>
           ) : filteredComplaints.length > 0 ? (
             filteredComplaints.map((complaint) => (
@@ -253,36 +251,36 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                       <div className="text-2xl">{getCategoryEmoji(complaint.category)}</div>
                       <div>
                         <h3 className="font-semibold text-gray-900">{complaint.title}</h3>
-                        <p className="text-sm text-gray-600">ID: {complaint.complaintId}</p>
+                        <p className="text-sm text-gray-600">{t('sosHistory.complaintId', { id: complaint.complaintId })}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
                       {complaint.isEmergencySOS && (
                         <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">
-                          EMERGENCY
+                          {t('sosHistory.emergency')}
                         </span>
                       )}
                       <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(complaint.status || 'submitted')}`}>
-                        {(complaint.status || 'submitted').replace('_', ' ').toUpperCase()}
+                        {t(`sosHistory.${complaint.status || 'submitted'}`, (complaint.status || 'submitted').replace('_', ' ').toUpperCase())}
                       </span>
                     </div>
                   </div>
 
                   {/* Description */}
-                  {<p className="text-sm text-gray-700 line-clamp-2">
+                  <p className="text-sm text-gray-700 line-clamp-2">
                     {complaint.description}
-                  </p>}
+                  </p>
 
                   {/* Details */}
                   <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center space-x-4">
                       <span className="flex items-center">
                         <Calendar size={12} className="mr-1" />
-                        {complaint.createdAt ? new Date(complaint.createdAt).toLocaleDateString() : 'Recently'}
+                        {complaint.createdAt ? new Date(complaint.createdAt).toLocaleDateString() : t('sosHistory.recently')}
                       </span>
                       <span className={`flex items-center font-medium ${getUrgencyColor(complaint.urgency)}`}>
                         <AlertTriangle size={12} className="mr-1" />
-                        {complaint.urgency.toUpperCase()}
+                        {t(`sos.urgency.${complaint.urgency}`, complaint.urgency.toUpperCase())}
                       </span>
                       {complaint.location?.address && (
                         <span className="flex items-center">
@@ -298,40 +296,24 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                       <ChevronRight size={14} className="text-gray-400" />
                     </div>
                   </div>
-
-                  {/* Communication indicator */}
-                  { complaint && (
-                    <div className="flex items-center text-xs text-blue-600">
-                      <MessageCircle size={12} className="mr-1" />
-                      {complaint.description}
-                    </div>
-                  )}
-
-                  {/* Feedback indicator */}
-                  {complaint && (
-                    <div className="flex items-center text-xs text-yellow-600">
-                      <Star size={12} className="mr-1" />
-                      Rated {complaint.description}/5
-                    </div>
-                  )}
                 </div>
               </div>
             ))
           ) : (
             <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
               <AlertTriangle size={48} className="text-gray-300 mx-auto mb-4" />
-              <h3 className="font-semibold text-gray-900 mb-2">No Complaints Found</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{t('sosHistory.noComplaintsFound')}</h3>
               <p className="text-gray-600 mb-4">
                 {searchTerm || filterStatus || filterCategory
-                  ? 'Try adjusting your search or filters'
-                  : 'You haven\'t submitted any help requests yet'}
+                  ? t('sosHistory.adjustFilters')
+                  : t('sosHistory.noComplaintsYet')}
               </p>
               {(searchTerm || filterStatus || filterCategory) && (
                 <button
                   onClick={handleClearFilters}
                   className="text-blue-600 font-medium"
                 >
-                  Clear all filters
+                  {t('sosHistory.clearAllFilters')}
                 </button>
               )}
             </div>
@@ -347,17 +329,17 @@ const SOSHistoryScreen: React.FC<SOSHistoryScreenProps> = ({
                 disabled={currentPage === 1}
                 className="px-4 py-2 text-sm font-medium text-blue-600 disabled:text-gray-400 disabled:cursor-not-allowed"
               >
-                Previous
+                {t('sosHistory.previous')}
               </button>
               <span className="text-sm text-gray-600">
-                Page {currentPage} of {totalPages}
+                {t('sosHistory.pageOf', { current: currentPage, total: totalPages })}
               </span>
               <button
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
                 className="px-4 py-2 text-sm font-medium text-blue-600 disabled:text-gray-400 disabled:cursor-not-allowed"
               >
-                Next
+                {t('sosHistory.next')}
               </button>
             </div>
           </div>

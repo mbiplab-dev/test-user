@@ -1,5 +1,5 @@
 // =============================================================================
-// COMPONENT: Group Status Screen
+// COMPONENT: Group Status Screen with i18next
 // File path: src/components/screens/GroupStatusScreen.tsx
 // =============================================================================
 
@@ -48,7 +48,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
   return (
     <div className="space-y-6">
       <Header 
-        title={t('home.groupStatus')} 
+        title={t('group.groupStatus')} 
         onBack={onBack}
         rightAction={
           <button className="p-2 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
@@ -60,7 +60,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
       <div className="px-4 space-y-6">
         {/* Group Overview */}
         <div className="bg-gray-700 rounded-3xl p-6 text-white relative overflow-hidden">
-          <div className="absolute inset-0  to-transparent" />
+          <div className="absolute inset-0 to-transparent" />
           <div className="relative">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -68,8 +68,8 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   <Users className="text-white" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">{t('home.travelGroup')}</h2>
-                  <p className="text-purple-100">{t('home.members', { count: groupMembers.length })}</p>
+                  <h2 className="text-xl font-bold">{t('group.travelGroup')}</h2>
+                  <p className="text-purple-100">{t('group.members', { count: groupMembers.length })}</p>
                 </div>
               </div>
               
@@ -84,14 +84,14 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   <Shield className="text-green-300" size={16} />
                   <span className="text-2xl font-bold">{safeCount}</span>
                 </div>
-                <p className="text-sm text-purple-100">{t('map.safe')}</p>
+                <p className="text-sm text-purple-100">{t('group.safe')}</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center space-x-1 mb-1">
                   <AlertTriangle className="text-orange-300" size={16} />
                   <span className="text-2xl font-bold">{warningCount}</span>
                 </div>
-                <p className="text-sm text-purple-100">{t('map.warnings')}</p>
+                <p className="text-sm text-purple-100">{t('group.warnings')}</p>
               </div>
             </div>
           </div>
@@ -100,9 +100,9 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
         {/* Filter Tabs */}
         <div className="flex bg-gray-100 rounded-2xl p-1">
           {[
-            { key: 'all' as const, label: t('common.all'), count: groupMembers.length },
-            { key: 'safe' as const, label: t('map.safe'), count: safeCount },
-            { key: 'warning' as const, label: t('map.warnings'), count: warningCount }
+            { key: 'all' as const, label: t('group.all', { count: groupMembers.length }), count: groupMembers.length },
+            { key: 'safe' as const, label: t('group.safeCount', { count: safeCount }), count: safeCount },
+            { key: 'warning' as const, label: t('group.warningCount', { count: warningCount }), count: warningCount }
           ].map((tab) => (
             <button
               key={tab.key}
@@ -113,7 +113,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {tab.label} ({tab.count})
+              {tab.label}
             </button>
           ))}
         </div>
@@ -131,7 +131,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   className="flex items-center justify-center space-x-2 py-3 px-4 bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition-colors"
                 >
                   <Phone size={16} />
-                  <span className="text-sm font-medium">{t('group.call', 'Call')}</span>
+                  <span className="text-sm font-medium">{t('group.call')}</span>
                 </button>
                 
                 <button
@@ -139,7 +139,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   className="flex items-center justify-center space-x-2 py-3 px-4 bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition-colors"
                 >
                   <MessageCircle size={16} />
-                  <span className="text-sm font-medium">{t('group.message', 'Message')}</span>
+                  <span className="text-sm font-medium">{t('group.message')}</span>
                 </button>
                 
                 <button
@@ -147,7 +147,7 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
                   className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-50 text-purple-700 rounded-xl hover:bg-purple-100 transition-colors"
                 >
                   <MapPin size={16} />
-                  <span className="text-sm font-medium">{t('group.locate', 'Locate')}</span>
+                  <span className="text-sm font-medium">{t('group.locate')}</span>
                 </button>
               </div>
             </div>
@@ -158,44 +158,44 @@ const GroupStatusScreen: React.FC<GroupStatusScreenProps> = ({
         <div className="bg-red-50 rounded-2xl p-4 border border-red-200">
           <div className="flex items-center space-x-3 mb-3">
             <AlertTriangle className="text-red-600" size={20} />
-            <h3 className="font-semibold text-red-800">{t('group.emergencyActions', 'Emergency Actions')}</h3>
+            <h3 className="font-semibold text-red-800">{t('group.emergencyActions')}</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <button className="bg-red-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-red-700 transition-colors">
-              {t('group.alertAllMembers', 'Alert All Members')}
+              {t('group.alertAllMembers')}
             </button>
             <button className="bg-white border border-red-300 text-red-600 py-3 px-4 rounded-xl font-medium hover:bg-red-50 transition-colors">
-              {t('group.emergencyCall', 'Emergency Call')}
+              {t('group.emergencyCall')}
             </button>
           </div>
         </div>
 
         {/* Group Activity */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('home.recentActivity')}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('group.recentActivity')}</h3>
           <div className="space-y-3">
             {[
               { 
                 member: 'Sarah Chen', 
-                action: t('group.activity.checkedIn', 'checked in'), 
-                location: 'Burj Khalifa',
+                action: t('group.activity.checkedIn'), 
+                location: 'OT Market',
               },
               { 
                 member: 'Mike Johnson', 
-                action: t('group.activity.sharedLocation', 'shared location'), 
-                location: 'Dubai Mall',
+                action: t('group.activity.sharedLocation'), 
+                location: 'Imphal Mall',
               },
               { 
                 member: 'David Kim', 
-                action: t('group.activity.markedSafe', 'marked safe'), 
-                location: 'Dubai Marina',
+                action: t('group.activity.markedSafe'), 
+                location: 'Park',
               }
             ].map((activity, index) => (
               <div key={index} className="flex items-center space-x-3 py-2">
                 <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-gray-900">
-                    <span className="font-medium">{activity.member}</span> {activity.action} {t('group.activity.at', 'at')} {activity.location}
+                    <span className="font-medium">{activity.member}</span> {activity.action} {t('group.activity.at')} {activity.location}
                   </p>
                   <p className="text-xs text-gray-500 flex items-center space-x-1">
                     <Clock size={12} />

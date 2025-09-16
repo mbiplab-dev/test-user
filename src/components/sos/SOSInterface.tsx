@@ -17,7 +17,6 @@ import { toast } from "react-hot-toast";
 import type { SOSState } from "../../types";
 import Header from "../layout/Header";
 import sosService, { type SOSComplaint } from "../../services/sosService";
-import authService from "../../services/authService";
 
 interface SOSInterfaceProps {
   sosState: SOSState;
@@ -55,7 +54,6 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
     address: string;
     coordinates?: [number, number];
   }>({ address: currentLocation });
-  const API_BASE_URL = import.meta.env.VITE_BASE_URL
 
   const [helpRequest, setHelpRequest] = useState<HelpRequest>({
     category: '',
@@ -98,26 +96,48 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
     }
   };
 
-  const helpCategories = sosService.getHelpCategories().map(category => ({
-    ...category,
-    icon: category.id === 'missing_person' ? UserX :
-          category.id === 'fire_emergency' ? Flame :
-          category.id === 'theft_robbery' ? ShieldAlert :
-          category.id === 'accident' ? Car :
-          category.id === 'medical_help' ? HeartHandshake :
-          AlertTriangle,
-    color: category.urgency === 'critical' ? 'bg-red-500' :
-           category.urgency === 'high' ? 'bg-orange-500' :
-           category.urgency === 'medium' ? 'bg-green-500' :
-           'bg-gray-500'
-  }));
+  // Get help categories with localized titles and descriptions
+  const getLocalizedHelpCategories = () => {
+    return sosService.getHelpCategories().map(category => {
+      // Map category IDs to the correct JSON keys
+      const getCategoryTitleKey = (id: string) => {
+        switch (id) {
+          case 'missing_person': return 'sosHistory.missingPerson';
+          case 'fire_emergency': return 'sosHistory.fireEmergency';
+          case 'theft_robbery': return 'sosHistory.theftRobbery';
+          case 'accident': return 'sosHistory.accident';
+          case 'medical_help': return 'sosHistory.medicalHelp';
+          case 'general_help': return 'sosHistory.generalHelp';
+          default: return '';
+        }
+      };
+
+      return {
+        ...category,
+        localizedTitle: t(getCategoryTitleKey(category.id), category.title),
+        localizedDescription: category.description, // Use default description since emergencyTypes don't exist in JSON
+        icon: category.id === 'missing_person' ? UserX :
+              category.id === 'fire_emergency' ? Flame :
+              category.id === 'theft_robbery' ? ShieldAlert :
+              category.id === 'accident' ? Car :
+              category.id === 'medical_help' ? HeartHandshake :
+              AlertTriangle,
+        color: category.urgency === 'critical' ? 'bg-red-500' :
+               category.urgency === 'high' ? 'bg-orange-500' :
+               category.urgency === 'medium' ? 'bg-green-500' :
+               'bg-gray-500'
+      };
+    });
+  };
+
+  const helpCategories = getLocalizedHelpCategories();
 
   const handleCategorySelect = (category: typeof helpCategories[0]) => {
     setSelectedCategory(category.id);
     setHelpRequest(prev => ({
       ...prev,
       category: category.id,
-      title: category.title,
+      title: category.localizedTitle,
       urgency: category.urgency
     }));
     setShowHelpForm(true);
@@ -137,7 +157,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
           coordinates: currentLocationData.coordinates
         },
         additionalInfo: helpRequest.additionalInfo
-      });
+      }, t);
 
       if (!validation.isValid) {
         validation.errors.forEach(error => toast.error(error));
@@ -146,31 +166,22 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
       setIsSubmitting(true);
 
-      // Prepare the request body based on the cURL data
-      const requestBody = {
+      // Submit the complaint
+      await sosService.submitComplaint({
         category: helpRequest.category,
         title: helpRequest.title,
         description: helpRequest.description,
         urgency: helpRequest.urgency,
         contactInfo: helpRequest.contactInfo,
         location: {
-          address: helpRequest.location
+          address: helpRequest.location,
+          coordinates: currentLocationData.coordinates
         },
         additionalInfo: helpRequest.additionalInfo,
         isEmergencySOS: false
-      };
-
-      // Make the API request using Fetch
-      const response = await authService.apiRequest(`${API_BASE_URL}/sos/submit`, {
-        method: 'POST',
-        body: JSON.stringify(requestBody)
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      toast.success(t('success.helpRequestSubmitted', 'Help request submitted successfully'));
+      toast.success(t('success.helpRequestSubmitted'));
       
       // Reset form and go back to main view
       setShowHelpForm(false);
@@ -189,7 +200,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
     } catch (error: any) {
       console.error('Submit help request error:', error);
-      toast.error(error.message || t('errors.failedToSubmitHelp', 'Failed to submit help request'));
+      toast.error(error.message || t('errors.failedToSubmitHelp'));
     } finally {
       setIsSubmitting(false);
     }
@@ -200,7 +211,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
       setIsSubmitting(true);
       
       const emergencyData = {
-        description: t('sos.emergencySOSDescription', 'Emergency SOS activated - immediate assistance required'),
+        description: t('sos.emergencySOSDescription'),
         location: {
           address: currentLocationData.address,
           coordinates: currentLocationData.coordinates
@@ -209,14 +220,14 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
       await sosService.submitEmergencySOS(emergencyData);
       
-      toast.success(t('success.emergencySOSActivated', 'Emergency SOS activated successfully'));
+      toast.success(t('success.emergencySOSActivated'));
       
       // Reload recent complaints
       await loadRecentComplaints();
       
     } catch (error: any) {
       console.error('Emergency SOS error:', error);
-      toast.error(error.message || t('errors.failedToActivateSOS', 'Failed to activate emergency SOS'));
+      toast.error(error.message || t('errors.failedToActivateSOS'));
     } finally {
       setIsSubmitting(false);
     }
@@ -247,13 +258,21 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
     }
   };
 
+  const getStatusText = (status: string) => {
+    return sosService.getStatusText(status, t);
+  };
+
+  const formatRelativeTime = (dateString: string) => {
+    return sosService.formatRelativeTime(dateString, t);
+  };
+
   if (sosState === "inactive") return null;
 
   return (
     <div className="h-full w-full bg-gray-50 flex flex-col">
       {/* Header */}
       <Header 
-        title={t('sos.helpEmergency', 'Help & Emergency')}
+        title={t('sos.helpEmergency')}
         rightAction={
           showHelpForm ? (
             <button
@@ -273,10 +292,10 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
             {/* Help Categories */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <h2 className="text-xl font-bold text-gray-900 mb-2">
-                {t('sos.whatHelpNeeded', 'What kind of help do you need?')}
+                {t('sos.whatHelpNeeded')}
               </h2>
               <p className="text-gray-600 text-sm mb-6">
-                {t('sos.selectCategory', 'Select the category that best describes your situation')}
+                {t('sos.selectCategory')}
               </p>
               
               <div className="grid grid-cols-2 gap-3">
@@ -294,10 +313,10 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                           <IconComponent size={24} className="text-white" />
                         </div>
                         <h3 className="font-semibold text-gray-900 text-sm mb-1">
-                          {category.title}
+                          {category.localizedTitle}
                         </h3>
                         <p className="text-xs text-gray-500 leading-tight">
-                          {category.description}
+                          {category.localizedDescription}
                         </p>
                       </div>
                     </button>
@@ -319,6 +338,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                 <button
                   onClick={loadCurrentLocation}
                   className="text-blue-600 text-sm font-medium"
+                  disabled={isSubmitting}
                 >
                   {t('common.update')}
                 </button>
@@ -327,7 +347,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
             {/* Recent Help Requests */}
             <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-              <h3 className="font-semibold text-gray-900 mb-3">{t('sos.recentHelpRequests', 'Recent Help Requests')}</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">{t('sos.recentHelpRequests')}</h3>
               {isLoadingComplaints ? (
                 <div className="text-center py-4">
                   <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
@@ -343,11 +363,11 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                           <p className="text-sm font-medium text-gray-900">{complaint.title}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(complaint.status || 'submitted')}`}>
-                              {(complaint.status || 'submitted').replace('_', ' ').toUpperCase()}
+                              {getStatusText(complaint.status || 'submitted')}
                             </span>
                             <span className="text-xs text-gray-500 flex items-center">
                               <Clock size={12} className="mr-1" />
-                              {complaint.createdAt ? new Date(complaint.createdAt).toLocaleDateString() : t('sos.recently', 'Recently')}
+                              {complaint.createdAt ? formatRelativeTime(complaint.createdAt) : t('sos.recently')}
                             </span>
                           </div>
                         </div>
@@ -356,13 +376,13 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                   ))}
                   {recentComplaints.length > 3 && (
                     <button className="w-full text-center text-blue-600 text-sm font-medium py-2">
-                      {t('sos.viewAllRequests', 'View All Requests')}
+                      {t('sos.viewAllRequests')}
                     </button>
                   )}
                 </div>
               ) : (
                 <div className="text-center py-4">
-                  <p className="text-sm text-gray-500">{t('sos.noRecentRequests', 'No recent help requests')}</p>
+                  <p className="text-sm text-gray-500">{t('sos.noRecentRequests')}</p>
                 </div>
               )}
             </div>
@@ -381,7 +401,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                 <div>
                   <h2 className="text-lg font-bold text-gray-900">{helpRequest.title}</h2>
                   <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium border ${getUrgencyColor(helpRequest.urgency)}`}>
-                    {helpRequest.urgency.toUpperCase()} {t('sos.priority', 'PRIORITY')}
+                    {t(`sos.urgency.${helpRequest.urgency}`)} {t('sos.priority')}
                   </span>
                 </div>
               </div>
@@ -390,7 +410,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('sos.urgencyLevel', 'Urgency Level')} *
+                    {t('sos.urgencyLevel')} *
                   </label>
                   <select
                     value={helpRequest.urgency}
@@ -398,10 +418,10 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                     className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     disabled={isSubmitting}
                   >
-                    <option value="low">{t('sos.urgency.low', 'Low - Can wait for assistance')}</option>
-                    <option value="medium">{t('sos.urgency.medium', 'Medium - Need help soon')}</option>
-                    <option value="high">{t('sos.urgency.high', 'High - Urgent assistance needed')}</option>
-                    <option value="critical">{t('sos.urgency.critical', 'Critical - Immediate help required')}</option>
+                    <option value="low">{t('sos.urgency.low')}</option>
+                    <option value="medium">{t('sos.urgency.medium')}</option>
+                    <option value="high">{t('sos.urgency.high')}</option>
+                    <option value="critical">{t('sos.urgency.critical')}</option>
                   </select>
                 </div>
 
@@ -412,7 +432,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                   <textarea
                     value={helpRequest.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
-                    placeholder={t('sos.describeSituation', 'Describe your situation in detail...')}
+                    placeholder={t('sos.describeSituation')}
                     className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent h-24 resize-none"
                     disabled={isSubmitting}
                   />
@@ -420,13 +440,13 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('sos.contactInfo', 'Your Contact Information')} *
+                    {t('sos.contactInfo')} *
                   </label>
                   <input
                     type="text"
                     value={helpRequest.contactInfo}
                     onChange={(e) => handleInputChange('contactInfo', e.target.value)}
-                    placeholder={t('sos.contactPlaceholder', 'Phone number or best way to reach you')}
+                    placeholder={t('sos.contactPlaceholder')}
                     className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     disabled={isSubmitting}
                   />
@@ -447,12 +467,12 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('sos.additionalInfo', 'Additional Information')}
+                    {t('sos.additionalInfo')}
                   </label>
                   <textarea
-                    value={helpRequest.additionalInfo}
+                    value={helpRequest.additionalInfo || ''}
                     onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
-                    placeholder={t('sos.additionalDetails', 'Any other relevant details...')}
+                    placeholder={t('sos.additionalDetails')}
                     className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent h-20 resize-none"
                     disabled={isSubmitting}
                   />
@@ -466,12 +486,12 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>{t('sos.submitting', 'Submitting...')}</span>
+                      <span>{t('sos.submitting')}</span>
                     </>
                   ) : (
                     <>
                       <Send size={18} />
-                      <span>{t('sos.submitHelpRequest', 'Submit Help Request')}</span>
+                      <span>{t('sos.submitHelpRequest')}</span>
                     </>
                   )}
                 </button>
@@ -483,9 +503,9 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
         {/* Emergency SOS Slider - Always at bottom */}
         <div className="bg-white rounded-2xl p-4 shadow-sm border-2 border-red-200">
           <div className="text-center mb-4">
-            <h3 className="font-bold text-red-800 mb-1">{t('sos.criticalEmergency', 'CRITICAL EMERGENCY')}</h3>
+            <h3 className="font-bold text-red-800 mb-1">{t('sos.criticalEmergency')}</h3>
             <p className="text-sm text-red-600">
-              {t('sos.emergencySliderMessage', 'For life-threatening emergencies, slide to call emergency services immediately')}
+              {t('sos.emergencySliderMessage')}
             </p>
           </div>
 
@@ -515,7 +535,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
               {swipeProgress < 50 && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
                   <span className="text-white font-medium text-sm ml-8">
-                    {isSubmitting ? t('sos.processing', 'Processing...') : t('sos.slideToCall')}
+                    {isSubmitting ? t('sos.processing') : t('sos.slideToCall')}
                   </span>
                 </div>
               )}
@@ -533,10 +553,10 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
             <div className="text-center py-6">
               <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <h3 className="text-lg font-bold text-red-800 mb-2">
-                {t('sos.callingEmergencyServices', 'Calling Emergency Services')}
+                {t('sos.callingEmergencyServices')}
               </h3>
               <p className="text-red-600 text-sm">
-                {t('sos.connectingToResponders', 'Connecting you to emergency responders...')}
+                {t('sos.connectingToResponders')}
               </p>
             </div>
           )}
@@ -547,16 +567,17 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                 <CheckCircle size={24} className="text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-green-800 mb-2">
-                {t('sos.emergencyServicesContacted', 'Emergency Services Contacted')}
+                {t('sos.emergencyServicesContacted')}
               </h3>
               <p className="text-green-600 text-sm">
-                {t('sos.helpOnTheWay', 'Help is on the way. Stay on the line.')}
+                {t('sos.helpOnTheWay')}
               </p>
               <button
                 onClick={handleEmergencySOS}
-                className="mt-3 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+                disabled={isSubmitting}
+                className="mt-3 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50"
               >
-                {t('sos.logEmergencyReport', 'Log Emergency Report')}
+                {isSubmitting ? t('sos.logging') : t('sos.logEmergencyReport')}
               </button>
             </div>
           )}
@@ -566,7 +587,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
               <div className="text-center">
                 <h3 className="font-bold text-red-800 mb-2">{t('sos.emergencyActive')}</h3>
                 <p className="text-sm text-red-600 mb-4">
-                  {t('sos.respondersEnRoute', 'Emergency responders are en route to your location')}
+                  {t('sos.respondersEnRoute')}
                 </p>
               </div>
 
@@ -603,7 +624,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
                 disabled={isSubmitting}
                 className="w-full bg-red-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
               >
-                {isSubmitting ? t('sos.logging', 'Logging...') : t('sos.logEmergencyDetails', 'Log Emergency Details')}
+                {isSubmitting ? t('sos.logging') : t('sos.logEmergencyDetails')}
               </button>
             </div>
           )}
