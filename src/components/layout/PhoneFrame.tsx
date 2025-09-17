@@ -7,7 +7,7 @@ interface PhoneFrameProps {
 
 const PhoneFrame: React.FC<PhoneFrameProps> = ({ children }) => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 pb-2">
       <div
         className="
         h-[100dvh] w-full max-h-screen
