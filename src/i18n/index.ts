@@ -19,6 +19,8 @@ import kn from "./locales/kn.json";  // Kannada
 import or from "./locales/or.json";  // Odia
 import pa from "./locales/pu.json";  // Punjabi
 import as from "./locales/as.json";  // Assamese
+import es from "./locales/es.json";  // Assamese
+import de from "./locales/de.json";  // Assamese
 
 const resources = {
   en: { translation: en },
@@ -32,6 +34,8 @@ const resources = {
   or: { translation: or },
   pa: { translation: pa },
   as: { translation: as },
+  es: { translation: es },
+  de: { translation: de },
 };
 
 i18n

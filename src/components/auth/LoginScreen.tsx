@@ -193,16 +193,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onAuthSuccess }) => {
               </div>
             </div>
 
-            {/* Forgot Password */}
-            <div className="flex justify-end">
-              <Link
-                to="/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-              >
-                {t('auth.forgotPassword')}
-              </Link>
-            </div>
-
             {/* Submit Button */}
             <button
               type="submit"
