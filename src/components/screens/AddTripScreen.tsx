@@ -420,7 +420,7 @@ const AddTripScreen: React.FC<AddTripScreenProps> = ({ onBack, onTripSaved }) =>
 
     return (
       <div className="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center">
-        <div className="bg-white rounded-t-3xl w-full max-w-sm h-full overflow-y-auto">
+        <div className="bg-white rounded-t-3xl w-full max-w-md h-full overflow-y-auto">
           <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900">

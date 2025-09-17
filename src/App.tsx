@@ -496,7 +496,7 @@ const SmartTouristApp: React.FC = () => {
     };
 
     return (
-      <div className="max-w-sm mx-auto bg-gray-50 min-h-screen flex flex-col">
+      <div className="max-w-md mx-auto bg-gray-50 min-h-screen flex flex-col">
         {/* Scrollable screen */}
         <div className="flex-1 overflow-y-auto pb-16">
           {renderScreen()}
