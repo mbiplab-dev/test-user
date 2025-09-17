@@ -65,11 +65,20 @@ const AppWrapper: React.FC = () => {
   }, [i18n.language]);
 
   return (
+    <div>
+    <div className="hidden md:block">
     <PhoneFrame>
       <Router>
         <SmartTouristApp />
       </Router>
     </PhoneFrame>
+    </div>
+    <div className="block md:hidden">
+      <Router>
+        <SmartTouristApp />
+      </Router>
+    </div>
+    </div>
   );
 };
 
