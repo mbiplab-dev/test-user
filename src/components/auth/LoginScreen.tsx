@@ -115,7 +115,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onAuthSuccess }) => {
           <div className="w-40 h-40 mx-auto mb-4">
             <img src="/logo.png" alt="App Logo" className="w-full h-full object-contain" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
           <p className="text-gray-600">{t('auth.signInToAccount')}</p>
         </div>
 

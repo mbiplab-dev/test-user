@@ -514,7 +514,7 @@ const SOSInterface: React.FC<SOSInterfaceProps> = ({
             <div className="relative h-16 bg-red-600 rounded-full flex items-center px-2 overflow-hidden">
               {/* Slider button */}
               <div
-                className="relative z-10 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-150 ease-out"
+                className="relative w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-150 ease-out"
                 style={{
                   transform: `translateX(${Math.min(
                     (swipeProgress / 100) * 280,

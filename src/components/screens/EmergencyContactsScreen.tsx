@@ -245,9 +245,9 @@ const EmergencyContactsScreen: React.FC<EmergencyContactsScreenProps> = ({ onBac
           <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('emergencyContacts.additionalServices')}</h3>
           <div className="space-y-3">
             {[
-              { name: t('emergencyContacts.touristHelpline'), number: '+971-600-555-559', description: t('emergencyContacts.touristAssistance') },
-              { name: t('emergencyContacts.embassyHotline'), number: '+971-4-397-1777', description: 'US Embassy UAE' },
-              { name: t('emergencyContacts.travelInsurance'), number: '+971-4-316-6666', description: t('emergencyContacts.emergencyTravelSupport') }
+              { name: t('emergencyContacts.touristHelpline'), number: '+91 78892347589', description: t('emergencyContacts.touristAssistance') },
+              { name: t('emergencyContacts.embassyHotline'), number: '+91 94786236490', description: 'US Embassy, India' },
+              { name: t('emergencyContacts.travelInsurance'), number: '+91 99564612519', description: t('emergencyContacts.emergencyTravelSupport') }
             ].map((service, index) => (
               <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
                 <div className="flex-1">

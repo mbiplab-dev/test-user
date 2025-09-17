@@ -124,7 +124,7 @@ const NotificationScreen: React.FC = () => {
     {
       icon: Shield,
       title: t('notifications.touristPolice'),
-      subtitle: "+971-4-TOURIST",
+      subtitle: "TOURIST",
       bgColor: "bg-blue-50 hover:bg-blue-100",
       iconColor: "text-blue-600",
       textColor: "text-blue-900",
@@ -133,7 +133,7 @@ const NotificationScreen: React.FC = () => {
     {
       icon: Heart,
       title: t('notifications.medical'),
-      subtitle: "+971-800-HEALTH",
+      subtitle: "HEALTH",
       bgColor: "bg-green-50 hover:bg-green-100",
       iconColor: "text-green-600",
       textColor: "text-green-900",
