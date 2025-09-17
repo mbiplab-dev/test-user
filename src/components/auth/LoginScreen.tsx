@@ -46,10 +46,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onAuthSuccess }) => {
     }
 
     // Email validation
-    if (loginMethod === 'email' && !/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error('Please enter a valid email address');
-      return false;
-    }
+    // if (loginMethod === 'email' && !/\S+@\S+\.\S+/.test(formData.email)) {
+    //   toast.error('Please enter a valid email address');
+    //   return false;
+    // }
 
     return true;
   };

@@ -45,7 +45,7 @@ const SignupScreen: React.FC<SignupScreenProps> = ({ onAuthSuccess }) => {
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error(t('errors.invalidFormat'));
+      toast.error(t('please enter valid email Id'));
       return false;
     }
     return true;

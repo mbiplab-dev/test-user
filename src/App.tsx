@@ -66,6 +66,31 @@ const AppWrapper: React.FC = () => {
 
   return (
     <div>
+      
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: "#4ade80",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: "#ef4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
     <div className="hidden md:block">
     <PhoneFrame>
       <Router>
@@ -530,30 +555,6 @@ const SmartTouristApp: React.FC = () => {
   return (
     <div className="App">
       {/* Toast Notifications */}
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-          success: {
-            duration: 3000,
-            iconTheme: {
-              primary: "#4ade80",
-              secondary: "#fff",
-            },
-          },
-          error: {
-            duration: 4000,
-            iconTheme: {
-              primary: "#ef4444",
-              secondary: "#fff",
-            },
-          },
-        }}
-      />
 
       <Routes>
         {/* Authentication Routes */}
