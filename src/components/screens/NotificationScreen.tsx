@@ -167,42 +167,6 @@ const NotificationScreen: React.FC = () => {
     }
   };
 
-  // Mark notification as read
-  const handleMarkAsRead = async (notificationId: string) => {
-    try {
-      await notificationService.markAsRead(notificationId);
-      // Update local state
-      setNotifications(prev => 
-        prev.map(notif => 
-          notif.id === notificationId 
-            ? { ...notif, isRead: true }
-            : notif
-        )
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
-      toast.success(t('success.settingsSaved'));
-    } catch (error) {
-      console.error("Failed to mark notification as read:", error);
-      toast.error(t('errors.somethingWentWrong'));
-    }
-  };
-
-  // Mark all as read
-  const handleMarkAllAsRead = async () => {
-    try {
-      await notificationService.markAllAsRead();
-      // Update local state
-      setNotifications(prev => 
-        prev.map(notif => ({ ...notif, isRead: true }))
-      );
-      setUnreadCount(0);
-      toast.success(t('success.settingsSaved'));
-    } catch (error) {
-      console.error("Failed to mark all as read:", error);
-      toast.error(t('errors.somethingWentWrong'));
-    }
-  };
-
   // Delete notification
   const handleDeleteNotification = async (notificationId: string) => {
     try {
@@ -214,7 +178,7 @@ const NotificationScreen: React.FC = () => {
       if (deletedNotification && !deletedNotification.isRead) {
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
-      toast.success(t('success.settingsSaved'));
+      toast.success(t('Notitification deleted sccessfully'));
     } catch (error) {
       console.error("Failed to delete notification:", error);
       toast.error(t('errors.somethingWentWrong'));
@@ -224,7 +188,7 @@ const NotificationScreen: React.FC = () => {
   // Refresh notifications
   const handleRefresh = async () => {
     await loadNotifications();
-    toast.success(t('success.settingsSaved'));
+    toast.success(t('Notifications updated successfully'));
   };
 
   // Initial load
@@ -246,13 +210,6 @@ const NotificationScreen: React.FC = () => {
             >
               <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
               <span>{t('common.update')}</span>
-            </button>
-            <button
-              className="text-sm text-blue-600 font-medium"
-              onClick={handleMarkAllAsRead}
-              disabled={unreadCount === 0 || loading}
-            >
-              {t('notifications.markAllRead')}
             </button>
           </div>
         }
@@ -339,15 +296,6 @@ const NotificationScreen: React.FC = () => {
                           >
                             {getPriorityText(notif.priority)}
                           </span>
-                        )}
-                        {!notif.isRead && (
-                          <button
-                            onClick={() => handleMarkAsRead(notif.id)}
-                            className="text-xs text-blue-600 hover:text-blue-800"
-                            disabled={loading}
-                          >
-                            {t('notifications.actions.dismiss')}
-                          </button>
                         )}
                       </div>
                     </div>
