@@ -532,6 +532,9 @@ const MapScreen: React.FC<MapScreenProps> = ({ groupMembers, mapContainer }) => 
             ref={mapContainer}
             className="w-full h-96 rounded-2xl overflow-hidden shadow-lg"
           />
+          <div className="flex flex-col text-sm text-blue-800 rounded-md bg-blue-300 border border-blue-400 px-2 my-2">
+            <div>Drag and drop map-pin to simulate location based geofencing alerts</div>
+          </div>
 
           <div className="absolute top-4 left-4 bg-white rounded-xl p-3 shadow-lg">
             <div className="flex items-center space-x-2">
